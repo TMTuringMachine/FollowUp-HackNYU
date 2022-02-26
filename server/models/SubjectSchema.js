@@ -9,6 +9,14 @@ const SubjectSchema = new mongoose.Schema({
       type:Number,
       default:100,
   },
+  class:{
+    type:Schema.Types.ObjectId,
+    ref:"CLASS"
+  },
+  // classID:[
+  //   {type:Schema.Types.ObjectId,
+  //   ref:"CLASS"},
+  // ]
 });
 
 const Subject = mongoose.model("SUBJECT", SubjectSchema);
