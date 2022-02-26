@@ -78,14 +78,46 @@ const jwtVerify = async (req, res) => {
     //   .populate(
     //     "myEnrolledCourses.courseID"
     //   );
-    console.log("in jwtVerify student");
-    return res.send({ student });
-  }
-  res.send(null);
-};
+      return res.send({ student });
+    }
+    res.send(null);
+  };
 
-module.exports = {
-  signup,
-  login,
-  jwtVerify,
-};
+  const joinClassByID = async(req,res)=>{
+    const {classID,studentID} = req.body;
+    try {
+      const getStudent = await Student.findById(studentID)
+      if(getStudent){
+        const updateStudent = await Student.findByIdAndUpdate(getStudent._id,{class:classID})
+        if(updateStudent) res
+        .status(200)
+        .json({ ok: true, message: "Class Joined",updateStudent});
+      }else{
+        res
+            .status(200)
+            .json({ ok: false, message: "Student Doesnt Exist" });
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  const getStudentTests = async(req,res)=>{
+    const {studentID} = req.body;
+    try {
+      const getStudent = await Student.findById(studentID);
+      if(getStudent) res
+      .status(200)
+      .json({ ok: true, message: `All Tests of ${getStudent.name}`, allTests:getStudent.tests});
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  module.exports = {
+    signup,
+    login,
+    jwtVerify,
+    joinClassByID,
+    getStudentTests
+  };

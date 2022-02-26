@@ -5,17 +5,10 @@ const TestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  subjects: [
-    {
-      subject: {
+  subjects: [{
         type: Schema.Types.ObjectId,
         ref: "SUBJECT",
-      },
-      marks: {
-        type: Number,
-      },
-    },
-  ],
+  }],
   classID: {
     type: Schema.Types.ObjectId,
     ref: "CLASS",
