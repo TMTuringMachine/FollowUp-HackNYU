@@ -102,9 +102,22 @@ const jwtVerify = async (req, res) => {
     }
   }
 
+
+  const getStudentTests = async(req,res)=>{
+    const {studentID} = req.body;
+    try {
+      const getStudent = await Student.findById(studentID);
+      if(getStudent) res
+      .status(200)
+      .json({ ok: true, message: `All Tests of ${getStudent.name}`, allTests:getStudent.tests});
+    } catch (error) {
+      console.log(error)
+    }
+  }
   module.exports = {
     signup,
     login,
     jwtVerify,
-    joinClassByID
+    joinClassByID,
+    getStudentTests
   };
