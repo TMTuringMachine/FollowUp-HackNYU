@@ -5,7 +5,7 @@ const {
   login,
   jwtVerify,
   joinClassByID,
-  getStudentTests
+  getStudentTests,
 } = require("../controllers/student");
 
 router.post("/signup", signup);

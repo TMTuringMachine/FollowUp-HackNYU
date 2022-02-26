@@ -1,42 +1,44 @@
-import React,{useEffect} from 'react'
+import React,{useEffect, useState} from 'react'
 import { Flex, Text, Box } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
 import shadows from "../../theme/shadows";
 import axios from "../../utils/axios";
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
-import PieChartComponent from "./PieChart";
-const data01 = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-];
-const data02 = [
-  { name: "A1", value: 100 },
-  { name: "A2", value: 300 },
-  { name: "B1", value: 100 },
-  { name: "B2", value: 80 },
-  { name: "B3", value: 40 },
-  { name: "B4", value: 30 },
-  { name: "B5", value: 50 },
-  { name: "C1", value: 100 },
-  { name: "C2", value: 200 },
-  { name: "D1", value: 150 },
-  { name: "D2", value: 50 },
-];
+import { Bar,Legend,Tooltip,XAxis,YAxis,BarChart,CartesianGrid,ResponsiveContainer } from "recharts";
+import { useSelector} from "react-redux";
+import { useParams } from 'react-router-dom';
+
 const Test = () => {
+  const data = []
+  const { id } = useParams();
+  const user = useSelector((store)=>store.auth.user)
+  const [tests,setTests] = useState([]);
+  const [dataLen,setDataLen] = useState()
+  const getData = async()=>{
+    const response = await axios.get(`/student/getAllTests/${user._id}`);
+    for(var i = 0;i<response.data.allTests.length;i++){
+      if(response.data.allTests[i].test._id==id){
+        setTests(response.data.allTests[i])
+        console.log(response.data.allTests[i])
+      } 
+      setDataLen(response.data.allTests.length)
+    }}
 
-    const getData = async()=>{
-      console.log("I was called")
-      const response = await axios.get("/student/getAllTests/621a560e59c8cc20cee9786f");
-      console.log(response.data.allTests[0])
-    }
 
-    useEffect(() => {
-     getData()
-    }, [])
-    
-  
+  useEffect(() => {
+   getData()
+  }, [])
+
+  for(var i = 0;i<dataLen;i++){
+    data.push({
+      name:tests?.subjects[i]?.subject?.name,
+      "Marks Obtained":tests?.subjects[i]?.marksObtained,
+      "Total Marks":tests?.subjects[i]?.subject?.totalMarks
+    })
+    console.log(data,"Data")
+  }
+
+    console.log(data)
+
 
   return (
     <Box>
@@ -52,10 +54,10 @@ const Test = () => {
           fontSize={{ base: "1rem", md: "3.5rem" }}
           color="#3a0ca3"
         >
-          Unit 1
+          {tests?.test?.name}
         </Text>
         <Text m="0.2rem" color="gray">
-          25 Febrauary, 2022
+        {tests?.test?.date}
         </Text>
         <Flex
           p="2rem"
@@ -68,20 +70,24 @@ const Test = () => {
           <table style={{ width: "80%" }}>
             <tr style={{ marginBottom: "1rem" }}>
               <th>Subject</th>
-              <th>Sub1</th>
-              <th>Sub1</th>
-              <th>Sub1</th>
-              <th>Sub1</th>
+              {tests?.subjects?.length>0?tests?.subjects.map((subject)=>{
+                return(
+                  <td>{subject.subject.name}</td>
+                )
+              }):null
+              }
             </tr>
             <tr>
               <th>Marks</th>
-              <td>50/100</td>
-              <td>50/100</td>
-              <td>50/100</td>
-              <td>50/100</td>
+              {tests?.subjects?.length>0?tests?.subjects.map((subject)=>{
+                return(
+                  <td>{subject.marksObtained}/{subject.subject.totalMarks}</td>
+                )
+              }):null
+              }
             </tr>
           </table>
-          <Button
+          {/* <Button
             w="20%"
             p="0rem"
             backgroundColor="#4cc9f0"
@@ -89,23 +95,19 @@ const Test = () => {
             mt="1rem"
           >
             Download Report Card
-          </Button>
+          </Button> */}
         </Flex>
         <Flex flexWrap="wrap" w="100%" h="300px">
-          <ResponsiveContainer mr="2rem" width="400px" height="100px">
-            <PieChartComponent data01={data01} data02={data02} />
-          </ResponsiveContainer>
-          <ResponsiveContainer width="400px" height="100px">
-            <PieChartComponent data01={data01} data02={data02} />
-          </ResponsiveContainer>
-          <ResponsiveContainer width="400px" height="100px">
-            <PieChartComponent data01={data01} data02={data02} />
-          </ResponsiveContainer>{" "}
+          <BarChart width={730} height={250} barSize={60} barGap={30} data={data}>
+  <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="name" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      <Bar dataKey="Marks Obtained" fill="#8884d8" />
+      <Bar dataKey="Total Marks" fill="#82ca9d" />
+</BarChart>
         </Flex>
-        <br />
-        <br />
-        <br />
-        <br />
       </Flex>
     </Box>
   );

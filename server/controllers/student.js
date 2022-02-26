@@ -114,10 +114,14 @@ const jwtVerify = async (req, res) => {
       console.log(error)
     }
   }
+
+
+
   module.exports = {
     signup,
     login,
     jwtVerify,
     joinClassByID,
-    getStudentTests
+    getStudentTests,
+    
   };
