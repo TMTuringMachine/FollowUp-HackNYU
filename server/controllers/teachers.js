@@ -99,16 +99,18 @@ const createClass = async (req, res) => {
   try {
     if (!name || !teacher)
       res.status(200).json({ ok: false, message: "Enter All Details" });
-    const teacherExists = Teacher.findById(teacher);
+    const teacherExists = await Teacher.findById(teacher);
     if (teacherExists) {
       const classExists = await Class.findOne({ name });
       if (!classExists) {
         const newClass = new Class({ name, teacher });
         const saveClass = await newClass.save();
-        if (saveClass)
-          res
-            .status(200)
-            .send({ ok: true, message: "Class Created Successfully!" });
+        if (saveClass){
+          teacherExists.classes.push(saveClass._id)
+          const updatedTeacher = await Teacher.findByIdAndUpdate(teacher,{classes:teacherExists.classes})
+          if(updatedTeacher) 
+          res.status(200).send({ ok: true, message: "Class Created Successfully!" });
+        }
         else
           res
             .status(200)
@@ -277,6 +279,19 @@ const removeStudent = async(req,res)=>{
   }
 }
 
+const getAllClasses = async(req,res)=>{
+  const {id} = req.params;
+  console.log(id)
+  try {
+    const getClasses = await Teacher.findById(id).populate('classes')
+    if(getClasses){
+      res.send({ok:true,message:"successful",getClasses})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 
 
 module.exports = {
@@ -292,4 +307,5 @@ module.exports = {
   markAttendance,
   deleteClass,
   removeStudent,
+  getAllClasses
 };
