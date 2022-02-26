@@ -8,8 +8,12 @@
     "client": "cd client && npm run start",
     "server": "cd server && npm run nodemon",
     "dev": "concurrently -c \"bgMagenta,bgBlue,\" npm:server npm:client"
-
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^7.0.0",
+    "nodemon": "^2.0.15",
+    "recharts": "^2.1.9"
+  }
 }
