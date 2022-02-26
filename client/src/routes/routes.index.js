@@ -44,14 +44,25 @@ export default function Router() {
       element: <LandingPage />,
     },
     {
+      path: "/teacher/signup",
+      element: <TeacherSignup />,
+    },
+    {
+      path: "/student/signup",
+      element: <StudentSignup />,
+    },
+    {
+      path: "/teacher/login",
+      element: <TeacherLogin />,
+    },
+    {
+      path: "/student/login",
+      element: <StudentLogin />,
+    },
+    {
       path: "/teacher",
       element: <TeacherLayout />,
-      children: [
-        {
-          path: "test",
-          element: <Test />,
-        },
-      ],
+      children: [],
     },
     {
       path: "/student",
@@ -101,6 +112,21 @@ const RecentTest = Loadable(
 const StudentPerformance = Loadable(
   lazy(() => import("../pages/StudentPerformance"))
 );
+const TeacherSignup = Loadable(
+  lazy(() => import("../pages/TeacherAuth/TeacherSIgnup"))
+);
+const StudentSignup = Loadable(
+  lazy(() => import("../pages/StudentAuth/StudentSignup"))
+);
+
+const TeacherLogin = Loadable(
+  lazy(() => import("../pages/TeacherAuth/TeacherLogin"))
+);
+
+const StudentLogin = Loadable(
+  lazy(() => import("../pages/StudentAuth/StudentLogin"))
+);
+
 //pages
 // const SignIn = Loadable(
 //   lazy(() => import("../pages/sign-in/sign-in.componsnt"))

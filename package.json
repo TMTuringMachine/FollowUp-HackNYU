@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "concurrently": "^7.0.0",
+    "cors": "^2.8.5",
     "nodemon": "^2.0.15",
     "recharts": "^2.1.9"
   }

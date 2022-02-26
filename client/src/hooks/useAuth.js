@@ -8,7 +8,12 @@ import {
   registerSuccess,
 } from "../redux/slices/auth";
 import setToken from "../utils/setToken";
-export const SignupHandler = async (formData, dispatch, navigate) => {
+export const SignupHandler = async (
+  formData,
+  dispatch,
+  navigate,
+  isTeacher
+) => {
   try {
     const body = JSON.stringify(formData);
     const config = {
@@ -16,39 +21,47 @@ export const SignupHandler = async (formData, dispatch, navigate) => {
         "Content-type": "application/json",
       },
     };
-    const res = await axios.post("/user/signup", body, config);
-    dispatch(registerSuccess());
-    navigate("/login");
+    if (isTeacher) {
+      await axios.post("/teacher/signup", body, config);
+      dispatch(registerSuccess());
+      navigate("/teacher/login");
+    } else {
+      await axios.post("/student/signup", body, config);
+      dispatch(registerSuccess());
+
+      navigate("/student/login");
+    }
   } catch (e) {
     return e;
   }
 };
 
-export const LoginHandler = async (formData, dispatch, isAdmin) => {
+export const LoginHandler = async (formData, dispatch, isTeacher) => {
   const body = JSON.stringify(formData);
   const config = {
     headers: {
       "Content-type": "application/json",
     },
   };
-  if (isAdmin) {
-    var res = await axios.post("/admin/login", body, config);
+  if (isTeacher) {
+    var res = await axios.post("/teacher/login", body, config);
   } else {
-    var res = await axios.post("/user/login", body, config);
+    var res = await axios.post("/student/login", body, config);
   }
-  let userToken = "";
-  let adminToken = "";
+  let studentToken = "";
+  let teacherToken = "";
   if (res.data.ok) {
-    if (isAdmin) {
-      adminToken = res.data.token;
-      var user = res.data.AdminLogin;
-      localStorage.setItem("adminToken", JSON.stringify(adminToken));
+    if (isTeacher) {
+      teacherToken = res.data.token;
+      var user = res.data.teacherLogin;
+      localStorage.setItem("teacherToken", JSON.stringify(teacherToken));
+      setToken(teacherToken);
     } else {
-      userToken = res.data.token;
-      var user = res.data.userLogin;
-      localStorage.setItem("userToken", JSON.stringify(userToken));
+      studentToken = res.data.token;
+      var user = res.data.studentLogin;
+      localStorage.setItem("studentToken", JSON.stringify(studentToken));
+      setToken(studentToken);
     }
-
     console.log(user);
     dispatch(loginSuccess(user));
     const obj = {
@@ -66,26 +79,26 @@ export const LoginHandler = async (formData, dispatch, isAdmin) => {
 };
 export const initializeUser = async (dispatch) => {
   const token =
-    localStorage.getItem("userToken") || localStorage.getItem("adminToken");
+    localStorage.getItem("studentToken") ||
+    localStorage.getItem("teacherToken");
   if (token) {
     setToken(token);
-    if (localStorage.getItem("userToken")) {
-      const res = await axios.get("/user/jwtVerify");
-      console.log("fomr fskfj");
+    if (localStorage.getItem("studentToken")) {
+      const res = await axios.get("/student/jwtVerify");
       console.log(res);
       dispatch(
         initialize({
           isLoggedIn: true,
-          user: res.data.user,
+          user: res.data.student,
         })
       );
-    } else if (localStorage.getItem("adminToken")) {
-      const res = await axios.get("/admin/jwtVerify");
+    } else if (localStorage.getItem("teacherToken")) {
+      const res = await axios.get("/teacher/jwtVerify");
       console.log(res);
       dispatch(
         initialize({
           isLoggedIn: true,
-          user: res.data.user,
+          user: res.data.teacher,
         })
       );
     } else {
