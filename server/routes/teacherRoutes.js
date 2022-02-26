@@ -12,7 +12,9 @@ const {
   getAllStudents,
   getAllStudentsInClass,
   setMarksOfStudent,
-  markAttendance
+  markAttendance,
+  deleteClass,
+  removeStudent
 } = require("../controllers/teachers");
 
 router.post("/signup", signup);
@@ -25,5 +27,7 @@ router.get("/getAllStudents/:classID", getAllStudentsInClass);
 router.get("/getAllStudents", getAllStudents);
 router.post("/setMarks",setMarksOfStudent)
 router.post("/markAttendance",markAttendance)
+router.post("/deleteClass",deleteClass)
+router.post("/removeStudent",removeStudent)
 
 module.exports = router;

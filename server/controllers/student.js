@@ -92,10 +92,17 @@ const joinClassByID = async (req, res) => {
       const updateStudent = await Student.findByIdAndUpdate(getStudent._id, {
         class: classID,
       });
-      if (updateStudent)
+      if (updateStudent){
+        const getClass = await Class.findById(classID)
+        if(getClass){
+          getClass.students.push(studentID)
+          const addedStudent = await Class.findByIdAndUpdate(classID,{students:getClass.students})
+        }
         res
-          .status(200)
-          .json({ ok: true, message: "Class Joined", updateStudent });
+        .status(200)
+        .json({ ok: true, message: "Class Joined", updateStudent });
+      }
+        
     } else {
       res.status(200).json({ ok: false, message: "Student Doesnt Exist" });
     }

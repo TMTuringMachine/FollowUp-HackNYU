@@ -231,6 +231,52 @@ const markAttendance = async(req,res) =>{
     }
 }
 
+const deleteClass = async(req,res)=>{
+  const {classID, teacherID} = req.body;
+  try {
+    const getClass = await Class.findById(classID)
+    if(getClass){
+      if(getClass.teacher==teacherID){
+        const deleteClass = await Class.findByIdAndDelete(classID)
+        if(deleteClass) res.send({ok:true,message:"Class Deleted"})
+      }else{
+        res.send({ok:false,message:"This Class Doesnt Belong To You"})
+      }
+    }else{
+      res.send({ok:false,message:"Class doesnt Exist"})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const removeStudent = async(req,res)=>{
+  const {classID,studentID,teacherID} = req.body;
+  try {
+    const getClass = await Class.findById(classID);
+    if(getClass){
+      if(getClass.teacher==teacherID){
+        const index = getClass.students.indexOf(studentID);
+        getClass.students.splice(index, 1);
+        const updated = await Class.findByIdAndUpdate(classID,{students:getClass.students})
+        if(updated){
+          const delTeacherFromStudent = await Student.findByIdAndUpdate(studentID,{class:null})
+          if(delTeacherFromStudent) res.send({ok:true,message:"Student Removed From Class"})
+        }else{
+          res.send({ok:false,message:"Failed"})
+        }
+      }else{
+        res.send({ok:false,message:"This Class Doesnt Belong To You"})
+      }
+    }else{
+      res.send({ok:false,message:"Class doesnt Exist"})
+    }
+  } 
+  catch (error) {
+    
+  }
+}
+
 
 
 module.exports = {
@@ -243,5 +289,7 @@ module.exports = {
   getAllStudents,
   getAllStudentsInClass,
   setMarksOfStudent,
-  markAttendance
+  markAttendance,
+  deleteClass,
+  removeStudent,
 };
