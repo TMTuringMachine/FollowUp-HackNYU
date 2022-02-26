@@ -15,7 +15,8 @@ const {
   markAttendance,
   deleteClass,
   removeStudent,
-  getAllClasses
+  getAllClasses,
+  getOneClass
 } = require("../controllers/teachers");
 
 router.post("/signup", signup);
@@ -31,5 +32,6 @@ router.post("/markAttendance",markAttendance)
 router.post("/deleteClass",deleteClass)
 router.post("/removeStudent",removeStudent)
 router.get("/getAllClasses/:id",getAllClasses)
+router.get("/getOneClass/:classID",getOneClass)
 
 module.exports = router;

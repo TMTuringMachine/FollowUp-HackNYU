@@ -292,6 +292,18 @@ const getAllClasses = async(req,res)=>{
   }
 }
 
+const getOneClass = async(req,res)=>{
+  const {classID} = req.params;
+  try {
+    const getClass = await Class.findById(classID).populate('students').populate('subjects')
+    if(getClass){
+      res.send({ok:true,message:"Got One Class",getClass})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 
 
 module.exports = {
@@ -307,5 +319,6 @@ module.exports = {
   markAttendance,
   deleteClass,
   removeStudent,
-  getAllClasses
+  getAllClasses,
+  getOneClass
 };
