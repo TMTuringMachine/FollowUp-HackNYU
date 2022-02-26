@@ -80,9 +80,33 @@ const signup = async (req, res) => {
     res.send(null);
   };
 
+  const joinClassByID = async(req,res)=>{
+    const {classID,studentID} = req.body;
+    try {
+      const getStudent = await Student.findById(studentID)
+      if(getStudent){
+        const updateStudent = await Student.findByIdAndUpdate(getStudent._id,{class:classID})
+        if(updateStudent) res
+        .status(200)
+        .json({ ok: true, message: "Class Joined",updateStudent});
+      }else{
+        res
+            .status(200)
+            .json({ ok: false, message: "Student Doesnt Exist" });
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const EnrollInTest = async(req,res)=>{
+    
+  }
+
 
   module.exports = {
     signup,
     login,
     jwtVerify,
+    joinClassByID
   };

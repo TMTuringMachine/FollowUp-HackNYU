@@ -1,7 +1,9 @@
 const Teacher = require("../models/TeacherSchema");
 const Class = require("../models/ClassSchema");
 const Subject = require("../models/SubjectSchema");
-const Test = require("../models/TestSchema")
+const Test = require("../models/TestSchema");
+const Student = require("../models/StudentSchema");
+
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
@@ -122,40 +124,111 @@ const createClass = async (req, res) => {
   }
 };
 
-const addSubject = async (req,res)=>{
-    const {name,totalMarks,classID} = req.body;
-    try {
-      if(!name) res.status(200).send({ ok: false, message: "Enter All Fields" });
-      const subjectExists = await Subject.findOne({name})
-      if(!subjectExists){
-        const newSubject = new Subject({name,totalMarks,classID});
-        const saveSubject = await newSubject.save();
-        if(saveSubject) res.status(200).send({ ok: true, message: "New Subject Added!" });
-      }else{
-        res.status(200).send({ ok: false, message: "Subject Already Exists!" });
-      }
-    } catch (error) {
-      
-    }
-}
-
-const addTest = async(req,res)=>{
-  const {name,subjects,classID,date,time} = req.body
+const addSubject = async (req, res) => {
+  const { name, totalMarks, classID } = req.body;
   try {
-    if(!name || !subjects || !classID || !date || !time) res.status(200).send({ ok: false, message: "Enter All Fields" });
+    if (!name) res.status(200).send({ ok: false, message: "Enter All Fields" });
+    const subjectExists = await Subject.findOne({ name });
+    if (!subjectExists) {
+      const newSubject = new Subject({ name, totalMarks, classID });
+      const saveSubject = await newSubject.save();
+      if (saveSubject)
+        res.status(200).send({ ok: true, message: "New Subject Added!" });
+    } else {
+      res.status(200).send({ ok: false, message: "Subject Already Exists!" });
+    }
+  } catch (error) {}
+};
 
-    const testExists = await Test.findOne({name})
-    if(!testExists){
-      const newTest = new Test({name,subjects,classID,date,time})
+const addTest = async (req, res) => {
+  const { name, subjects, classID, date, time } = req.body;
+  try {
+    if (!name || !subjects || !classID || !date || !time)
+      res.status(200).send({ ok: false, message: "Enter All Fields" });
+
+    const testExists = await Test.findOne({ name });
+    if (!testExists) {
+      const newTest = new Test({ name, subjects, classID, date, time });
       const saveTest = await newTest.save();
 
-      if(saveTest) res.status(200).send({ ok: true, message: "Test Added!" });
-    }else{
+      if (saveTest) res.status(200).send({ ok: true, message: "Test Added!" });
+    } else {
       res.status(200).send({ ok: false, message: "Test Already Exists" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getAllStudentsInClass = async (req, res) => {
+  const { classID } = req.params;
+  try {
+    const students = await Student.find({ class: classID });
+    if (students)
+      res
+        .status(200)
+        .send({ ok: true, message: "Students Enrolled in Class", students });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getAllStudents = async(req,res)=>{
+  try {
+    const students = await Student.find({});
+    if (students)
+      res
+        .status(200)
+        .send({ ok: true, message: "All Students Enrolled", students });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const setMarksOfStudent = async(req,res)=>{
+  const {testID,subjects,studentID} = req.body;
+  try {
+    const isTest = await Test.findById(testID);
+    if(isTest){
+      const currentStudent = await Student.findById(studentID)
+     
+      currentStudent.tests.push({
+        test:testID,
+         subjects
+      })
+
+      const addMarks = await Student.findByIdAndUpdate(studentID,{tests:currentStudent.tests})
+      if(addMarks) res
+      .status(200)
+      .send({ ok: true, message: "Marks Added!"});
     }
   } catch (error) {
     console.log(error)
   }
+}
+
+const markAttendance = async(req,res) =>{
+    const {studentID, date, isPresent} = req.body;
+    try {
+      const currentStudent = await Student.findById(studentID)
+      if(currentStudent){
+        currentStudent.attendance.push(
+          {
+            date,
+            isPresent
+          }
+        )
+
+        const mark = await Student.findByIdAndUpdate(studentID,{
+          attendance:currentStudent.attendance
+        })
+        if(mark) res
+        .status(200)
+        .send({ ok: true, message: "Attendance Marked"});
+      }
+    } catch (error) {
+      
+    }
 }
 
 
@@ -166,5 +239,9 @@ module.exports = {
   jwtVerify,
   createClass,
   addSubject,
-  addTest
+  addTest,
+  getAllStudents,
+  getAllStudentsInClass,
+  setMarksOfStudent,
+  markAttendance
 };

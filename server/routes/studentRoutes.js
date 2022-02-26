@@ -4,10 +4,12 @@ const {
   signup,
   login,
   jwtVerify,
+  joinClassByID
 } = require("../controllers/student");
 
 router.post("/signup", signup);
 router.post("/login", login);
 router.get("/jwtVerify", jwtVerify);
+router.post("/joinClass",joinClassByID);
 
 module.exports = router;

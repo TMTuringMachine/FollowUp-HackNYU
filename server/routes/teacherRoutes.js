@@ -6,7 +6,11 @@ const {
   jwtVerify,
   createClass,
   addSubject,
-  addTest
+  addTest,
+  getAllStudents,
+  getAllStudentsInClass,
+  setMarksOfStudent,
+  markAttendance
 } = require("../controllers/teachers");
 
 router.post("/signup", signup);
@@ -14,7 +18,10 @@ router.post("/login", login);
 router.get("/jwtVerify", jwtVerify);
 router.post("/createClass", createClass);
 router.post("/addSubject", addSubject);
-router.post("/addTest",addTest)
-
+router.post("/addTest", addTest);
+router.get("/getAllStudents/:classID", getAllStudentsInClass);
+router.get("/getAllStudents", getAllStudents);
+router.post("/setMarks",setMarksOfStudent)
+router.post("/markAttendance",markAttendance)
 
 module.exports = router;

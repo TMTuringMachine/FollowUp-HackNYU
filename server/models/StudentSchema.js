@@ -5,40 +5,52 @@ const StudentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  email:{
-    type:String,
-    required:true,
+  email: {
+    type: String,
+    required: true,
   },
-  gender:{
-      type:String,
-      required:true,
+  gender: {
+    type: String,
+    required: true,
   },
-  password:{
-      type:String,
-      required:true,
+  password: {
+    type: String,
+    required: true,
   },
-  class:{
+  class: {
     type: Schema.Types.ObjectId,
     ref: "CLASS",
   },
-  phone:{
-    type:Number
+  phone: {
+    type: Number,
   },
-  tests:[
+  tests: [
     {
+      test: {
         type: Schema.Types.ObjectId,
         ref: "TEST",
       },
-  ],
-  attendance:[{
-    date:{
-        type:Date,
+      subjects: [
+        {
+          subject: {
+            type: Schema.Types.ObjectId,
+            ref: "SUBJECT",
+          },
+          marksObtained: Number,
+        },
+      ],
     },
-    isPresent:{
-        type:Boolean,
-    }
-  }]
-
+  ],
+  attendance: [
+    {
+      date: {
+        type: String,
+      },
+      isPresent: {
+        type: Boolean,
+      },
+    },
+  ],
 });
 
 const Student = mongoose.model("STUDENT", StudentSchema);
