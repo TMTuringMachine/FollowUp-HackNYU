@@ -1,6 +1,7 @@
 import { Box, Text, Button, Input } from "@chakra-ui/react";
 import React from "react";
 import { Icon } from "@iconify/react";
+import {useNavigate} from 'react-router-dom';
 
 const StudentOverview = () => (
   <Box
@@ -35,8 +36,9 @@ const StudentOverview = () => (
 );
 
 const TeacherClass = () => {
+    const navigate = useNavigate();
   return (
-    <Box padding="50px 20px 100px 20px" width="100%" height="100%">
+    <Box padding="50px 20px 100px 20px">
       <Box
         height="280px"
         width="100%"
@@ -78,6 +80,7 @@ const TeacherClass = () => {
             rightIcon={
               <Icon icon="ant-design:check-circle-filled" fontSize="1.2em" />
             }
+            onClick={()=>{navigate('/teacher/class/cwekjnwe/attendance')}}
           >
             MARK ATTENDANCE
           </Button>
@@ -93,8 +96,25 @@ const TeacherClass = () => {
                 fontSize="1.2em"
               />
             }
+            onClick={()=>{navigate('/teacher/class/cwekjnwe/test')}}
           >
             MARK TEST
+          </Button>
+          <Button
+            backgroundColor="#4CC9F0"
+            color="#fff"
+            _hover={{}}
+            borderRadius="5px"
+            marginRight="20px"
+            rightIcon={
+              <Icon
+                icon="healthicons:i-exam-multiple-choice"
+                fontSize="1.2em"
+              />
+            }
+            onClick={()=>{navigate('/teacher/class/cwekjnwe/test')}}
+          >
+            MAKE ANNOUNCEMENT
           </Button>
         </Box>
       </Box>
