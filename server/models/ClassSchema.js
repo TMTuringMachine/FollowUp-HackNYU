@@ -1,38 +1,44 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 const ClassSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
-  students:[
+  students: [
     {
-        type: Schema.Types.ObjectId,
-        ref: "STUDENT",
-      },
+      type: Schema.Types.ObjectId,
+      ref: "STUDENT",
+    },
   ],
-  teacher:{
-      type:Schema.Types.ObjectId,
-      ref:"TEACHER",
+  teacher: {
+    type: Schema.Types.ObjectId,
+    ref: "TEACHER",
   },
-  announcement:[
-      {
-          title:{
-              type:String,
-              required:true,
-          },
-          description:{
-              type:String, 
-              required:true,
-          }
-      },
-  ],
-  subjects:[
+  announcement: [
     {
-        type: Schema.Types.ObjectId,
-        ref: "SUBJECT",
+      title: {
+        type: String,
+        required: true,
       },
-  ]
+      description: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+  subjects: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "SUBJECT",
+    },
+  ],
+  feedback: [
+    {
+      rating: Number,
+      Text: String,
+    },
+  ],
 });
 
 const Class = mongoose.model("CLASS", ClassSchema);

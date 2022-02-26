@@ -1,4 +1,5 @@
 const Student = require("../models/StudentSchema");
+const Class = require("../models/ClassSchema");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
@@ -78,46 +79,67 @@ const jwtVerify = async (req, res) => {
     //   .populate(
     //     "myEnrolledCourses.courseID"
     //   );
-      return res.send({ student });
-    }
-    res.send(null);
-  };
+    return res.send({ student });
+  }
+  res.send(null);
+};
 
-  const joinClassByID = async(req,res)=>{
-    const {classID,studentID} = req.body;
-    try {
-      const getStudent = await Student.findById(studentID)
-      if(getStudent){
-        const updateStudent = await Student.findByIdAndUpdate(getStudent._id,{class:classID})
-        if(updateStudent) res
-        .status(200)
-        .json({ ok: true, message: "Class Joined",updateStudent});
-      }else{
+const joinClassByID = async (req, res) => {
+  const { classID, studentID } = req.body;
+  try {
+    const getStudent = await Student.findById(studentID);
+    if (getStudent) {
+      const updateStudent = await Student.findByIdAndUpdate(getStudent._id, {
+        class: classID,
+      });
+      if (updateStudent)
         res
-            .status(200)
-            .json({ ok: false, message: "Student Doesnt Exist" });
-      }
-    } catch (error) {
-      console.log(error)
+          .status(200)
+          .json({ ok: true, message: "Class Joined", updateStudent });
+    } else {
+      res.status(200).json({ ok: false, message: "Student Doesnt Exist" });
     }
+  } catch (error) {
+    console.log(error);
   }
+};
 
-
-  const getStudentTests = async(req,res)=>{
-    const {studentID} = req.body;
-    try {
-      const getStudent = await Student.findById(studentID);
-      if(getStudent) res
-      .status(200)
-      .json({ ok: true, message: `All Tests of ${getStudent.name}`, allTests:getStudent.tests});
-    } catch (error) {
-      console.log(error)
-    }
+const getStudentTests = async (req, res) => {
+  const { studentID } = req.body;
+  try {
+    const getStudent = await Student.findById(studentID);
+    if (getStudent)
+      res.status(200).json({
+        ok: true,
+        message: `All Tests of ${getStudent.name}`,
+        allTests: getStudent.tests,
+      });
+  } catch (error) {
+    console.log(error);
   }
-  module.exports = {
-    signup,
-    login,
-    jwtVerify,
-    joinClassByID,
-    getStudentTests
+};
+
+const feedback = async (req, res) => {
+  const { rating, text, class_id } = req.body;
+  const currClass = await Class.findById(class_id);
+  const newFeedback = {
+    rating,
+    Text: text,
   };
+  try {
+    currClass.feedback.push(newFeedback);
+    await currClass.save();
+    return res.status(200).send({ ok: true, message: "feedback added" });
+  } catch (e) {
+    return res.send(e.message);
+  }
+};
+
+module.exports = {
+  signup,
+  login,
+  jwtVerify,
+  joinClassByID,
+  getStudentTests,
+  feedback,
+};

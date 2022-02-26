@@ -60,7 +60,7 @@ export const LoginHandler = async (formData, dispatch, isTeacher) => {
       studentToken = res.data.token;
       var user = res.data.studentLogin;
       localStorage.setItem("studentToken", JSON.stringify(studentToken));
-      setToken(studentToken);
+      setToken(JSON.stringify(studentToken));
     }
     console.log(user);
     dispatch(loginSuccess(user));
@@ -82,7 +82,7 @@ export const initializeUser = async (dispatch) => {
     localStorage.getItem("studentToken") ||
     localStorage.getItem("teacherToken");
   if (token) {
-    setToken(token);
+    setToken(JSON.stringify(token));
     if (localStorage.getItem("studentToken")) {
       const res = await axios.get("/student/jwtVerify");
       console.log(res);

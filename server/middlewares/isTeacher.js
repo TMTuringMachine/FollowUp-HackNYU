@@ -1,6 +1,6 @@
 const { jwtVerify } = require("../controllers/teachers");
 const Teacher = require("../models/TeacherSchema");
-const isTeacher = (req, res, next) => {
+const isTeacher = async (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) {
     return res
@@ -8,8 +8,8 @@ const isTeacher = (req, res, next) => {
       .send("Authorization denied, please register as teacher");
   }
   try {
-    const teacher = jwtVerify(token, process.env.JWT_PRIVATE_KEY);
-
+    const decodedToken = jwtVerify(token, process.env.JWT_PRIVATE_KEY);
+    const teacher = await Teacher.findById(decodedToken._id);
     req.teacher = teacher;
     console.log("in student middleware");
     next();

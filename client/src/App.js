@@ -1,4 +1,4 @@
-import "./App.css";
+// import "./App.css";
 import Router from "./routes/routes.index";
 import ThemeConfig from "./theme/theme";
 import { useTheme } from "@mui/material";

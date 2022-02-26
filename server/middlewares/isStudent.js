@@ -1,7 +1,7 @@
 import { jwtVerify } from "../controllers/teachers";
 import Student from "../models/StudentSchema";
 
-const isStudent = (req, res, next) => {
+const isStudent = async (req, res, next) => {
   const token = req.headers.authorization;
   console.log(token);
   if (!token) {
@@ -10,7 +10,7 @@ const isStudent = (req, res, next) => {
 
   try {
     const decodeToken = jwtVerify(token, process.env.JWT_PRIVATE_KEY);
-    const student = Student.findById(decodeToken._id);
+    const student = await Student.findById(decodeToken._id);
     req.student = student;
     console.log("in student middleware");
     next();

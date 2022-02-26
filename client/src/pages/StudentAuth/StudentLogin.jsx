@@ -33,7 +33,7 @@ const StudentLogin = () => {
           setIsError(false);
         }, 3000);
       } else {
-        navigate("/");
+        navigate("/student/recentTests");
       }
     });
   };
