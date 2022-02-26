@@ -75,13 +75,22 @@ export default function Router() {
           path: "classes",
           element: <TeacherClasses />,
         },
+
+        {
+          path: "class/attendance",
+          element: <ClassAttendence />,
+        },
         {
           path: "class/:id",
           element: <TeacherClass />,
         },
         {
-          path: "class/attendance",
-          element: <ClassAttendence />,
+          path: "class/:id/test",
+          element: <TeacherTestMarks />,
+        },
+        {
+          path: "class/:id/attendance",
+          element: <TeacherAttendance />,
         },
       ],
     },
@@ -190,4 +199,13 @@ const TeacherClasses = Loadable(
 const TeacherClass = Loadable(
   lazy(() => import("../pages/TeacherClass/TeacherClass.component"))
 );
+
+const TeacherTestMarks = Loadable(
+  lazy(() => import("../pages/TeacherTestMarks/teacherTestMarks.component"))
+);
+
+const TeacherAttendance = Loadable(
+  lazy(() => import("../pages/TeacherAttendance/TeacherAttendence.component"))
+);
+
 const Chatroom = Loadable(lazy(() => import("../pages/Chatroom/Chatroom")));
