@@ -1,22 +1,22 @@
-const Teacher = require("../models/TeacherSchema");
+const Student = require("../models/StudentSchema");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 
 const signup = async (req, res) => {
-    var { name, email, gender, qualification, password,cpassword } = req.body;
-    if (!name || !email || !gender || !qualification || !password || !cpassword)
+    var { name, email, gender,phone, password,cpassword } = req.body;
+    if (!name || !email || !gender || !phone || !password || !cpassword)
       res.status(422).send("Enter all fields");
     try {
-      const teacherExists = await Teacher.findOne({ email: email });
-      if (teacherExists) {
+      const studentExists = await Student.findOne({ email: email });
+      if (studentExists) {
         res.status(422).send("User with this email already exists");
       } else if (password !== cpassword) {
         res.status(422).send("Passwords do not match");
       } else {
         const hashedPassword = await bcrypt.hash(password, 10);
         password = hashedPassword;
-        const teacher = new Teacher({ name, email, gender, qualification, password });
+        const teacher = new Student({ name, email, gender,phone, password });
         const saveTeacher = await teacher.save();
         if (saveTeacher) res.status(200).send("User created successfully");
       }
@@ -34,16 +34,16 @@ const signup = async (req, res) => {
           .status(200)
           .send({ ok: false, message: "Email or password cannot be blank" });
       }
-      const teacherLogin = await Teacher.findOne({ email: email });
-      if (teacherLogin) {
-        const isValid = await bcrypt.compare(password, teacherLogin.password);
+      const studentLogin = await Student.findOne({ email: email });
+      if (studentLogin) {
+        const isValid = await bcrypt.compare(password, studentLogin.password);
         if (!isValid) {
           res.status(200).json({ ok: false, message: "Incorrect Credentials" });
         } else {
           const token = jwt.sign(
             {
-              _id: teacherLogin._id,
-              name: teacherLogin.name,
+              _id: studentLogin._id,
+              name: studentLogin.name,
             },
             process.env.JWT_PRIVATE_KEY,
             {
@@ -52,7 +52,7 @@ const signup = async (req, res) => {
           );
           return res
             .status(200)
-            .json({ ok: true, message: "Login Successfull!", token, teacherLogin });
+            .json({ ok: true, message: "Login Successfull!", token, studentLogin });
         }
       } else {
         res.status(200).send({ ok: false, message: "User does not exist" });
@@ -71,11 +71,11 @@ const signup = async (req, res) => {
   
     const decodeToken = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
     if (decodeToken) {
-      const teacher = await Teacher.findById(decodeToken._id)
+      const student = await Student.findById(decodeToken._id)
     //   .populate(
     //     "myEnrolledCourses.courseID"
     //   );
-      return res.send({ teacher });
+      return res.send({ student });
     }
     res.send(null);
   };

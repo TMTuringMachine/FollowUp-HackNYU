@@ -4,7 +4,7 @@ const {
   signup,
   login,
   jwtVerify,
-} = require("../controllers/teachers");
+} = require("../controllers/student");
 
 router.post("/signup", signup);
 router.post("/login", login);
