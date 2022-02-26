@@ -73,6 +73,10 @@ export default function Router() {
           path: "attendence",
           element: <Attendence />,
         },
+        {
+          path: "performance",
+          element: <StudentPerformance />,
+        },
       ],
     },
   ]);
@@ -93,6 +97,9 @@ const Attendence = Loadable(
 );
 const RecentTest = Loadable(
   lazy(() => import("../components/RecentTests/RecentTests"))
+);
+const StudentPerformance = Loadable(
+  lazy(() => import("../pages/StudentPerformance"))
 );
 //pages
 // const SignIn = Loadable(
