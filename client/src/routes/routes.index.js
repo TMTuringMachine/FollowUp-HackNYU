@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 
 import { CircularProgress } from "@mui/material";
+import RecentTest from "../components/RecentTests/RecentTests";
 
 const Loadable = (Component) => (props) => {
   return (
@@ -47,6 +48,7 @@ export default function Router() {
           path: "/home",
           element: <Test />,
         },
+
         // {
         //   path: "/home",
         //   element: <Home />,
