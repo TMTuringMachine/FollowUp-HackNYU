@@ -60,6 +60,14 @@ export default function Router() {
         {
           path:"test",
           element:<Test/>
+        },
+        {
+          path:"announcement",
+          element:<Announcement />
+        },
+        {
+          path:"attendence",
+          element:<Attendence />
         }
       ]
     }
@@ -71,6 +79,8 @@ export default function Router() {
 //   lazy(() => import("../layouts/mainLayout/mainLayout.component"))
 // );
 const Test = Loadable(lazy(() => import("../components/Test/test.component")));
+const Announcement = Loadable(lazy(() => import("../components/Announcement/announcement.component")));
+const Attendence = Loadable(lazy(() => import("../components/Attendence/attendence.component")));
 //pages
 // const SignIn = Loadable(
 //   lazy(() => import("../pages/sign-in/sign-in.componsnt"))
