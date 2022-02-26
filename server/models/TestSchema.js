@@ -21,8 +21,13 @@ const TestSchema = new mongoose.Schema({
     ref: "CLASS",
   },
   date: {
-    type: Date,
+    type: String,
+    required:true
   },
+  time:{
+    type:String,
+    required:true
+  }
 });
 
 const Test = mongoose.model("TEST", TestSchema);
