@@ -1,6 +1,11 @@
 import { Box, Text, Button, Input } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { Icon } from "@iconify/react";
+import { useNavigate } from "react-router-dom";
+
+import AddSubjectModal from "./AddSubjectModal";
+import AddTestModal from "./AddTestModal";
+import AddAnnouncementModal from "./AddAnnouncementModal";
 
 const StudentOverview = () => (
   <Box
@@ -35,8 +40,23 @@ const StudentOverview = () => (
 );
 
 const TeacherClass = () => {
+  const navigate = useNavigate();
+  const [showSubjectModal, setShowSubjectModal] = useState(false);
+  const [showTestModal,setShowTestModal] = useState(false);
+  const [showAnnouncementModal,setShowAnnouncementModal] = useState(false);
+
+  const toggleSubjectModal = () => {
+    setShowSubjectModal(!showSubjectModal);
+  }
+  const toggleTestModal = () =>{
+    setShowTestModal(!showTestModal)
+  }
+  const toggleAnnouncementModal = () => {
+    setShowAnnouncementModal(!showAnnouncementModal)
+  }
+
   return (
-    <Box padding="50px 20px 100px 20px" width="100%" height="100%">
+    <Box padding="50px 20px 100px 20px">
       <Box
         height="280px"
         width="100%"
@@ -66,9 +86,11 @@ const TeacherClass = () => {
             borderRadius="5px"
             marginRight="20px"
             rightIcon={<Icon icon="carbon:add-filled" fontSize="1.2em" />}
+            onClick={toggleSubjectModal}
           >
             ADD SUBJECT
           </Button>
+          <AddSubjectModal state={showSubjectModal} toggleModal={toggleSubjectModal}/>
           <Button
             backgroundColor="#4CC9F0"
             color="#fff"
@@ -78,6 +100,9 @@ const TeacherClass = () => {
             rightIcon={
               <Icon icon="ant-design:check-circle-filled" fontSize="1.2em" />
             }
+            onClick={() => {
+              navigate("/teacher/class/cwekjnwe/attendance");
+            }}
           >
             MARK ATTENDANCE
           </Button>
@@ -93,9 +118,28 @@ const TeacherClass = () => {
                 fontSize="1.2em"
               />
             }
+            onClick={toggleTestModal}
           >
             MARK TEST
           </Button>
+          <AddTestModal state={showTestModal} toggleModal={toggleTestModal}/>
+          <Button
+            backgroundColor="#4CC9F0"
+            color="#fff"
+            _hover={{}}
+            borderRadius="5px"
+            marginRight="20px"
+            rightIcon={
+              <Icon
+                icon="healthicons:i-exam-multiple-choice"
+                fontSize="1.2em"
+              />
+            }
+            onClick={toggleAnnouncementModal}
+          >
+            MAKE ANNOUNCEMENT
+          </Button>
+          <AddAnnouncementModal state={showAnnouncementModal} toggleModal={toggleAnnouncementModal}/>
         </Box>
       </Box>
       <Input
