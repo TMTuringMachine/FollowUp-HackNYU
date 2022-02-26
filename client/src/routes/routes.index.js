@@ -77,10 +77,6 @@ export default function Router() {
         },
 
         {
-          path: "class/attendance",
-          element: <ClassAttendence />,
-        },
-        {
           path: "class/:id",
           element: <TeacherClass />,
         },
@@ -163,9 +159,6 @@ const StudentLogin = Loadable(
 
 const Feedback = Loadable(
   lazy(() => import("../components/Feedback/feedback.components"))
-);
-const ClassAttendence = Loadable(
-  lazy(() => import("../pages/ClassAttendence/ClassAttendence"))
 );
 //pages
 // const SignIn = Loadable(

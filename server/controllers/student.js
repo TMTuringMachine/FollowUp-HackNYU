@@ -105,15 +105,19 @@ const joinClassByID = async (req, res) => {
 };
 
 const getStudentTests = async (req, res) => {
-  const { studentID } = req.body;
+  const { studentID } = req.params;
   try {
-    const getStudent = await Student.findById(studentID);
+    const getStudent = await Student.findById(studentID)
+      .populate("tests.test")
+      .populate("tests.subjects.subject");
     if (getStudent)
-      res.status(200).json({
-        ok: true,
-        message: `All Tests of ${getStudent.name}`,
-        allTests: getStudent.tests,
-      });
+      res
+        .status(200)
+        .json({
+          ok: true,
+          message: `All Tests of ${getStudent.name}`,
+          allTests: getStudent.tests,
+        });
   } catch (error) {
     console.log(error);
   }
