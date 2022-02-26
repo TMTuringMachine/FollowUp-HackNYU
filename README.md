@@ -59,7 +59,7 @@ We are using Figma for prototyping and designing the project. Figma makes it ver
 - How to work with MERN stack.
 
 ## 🚀 What's next for APPNAME
-
+<!-- JJth<njjusbbht<<sd>>> -->
 - A mobile app version
 
 ## Resources

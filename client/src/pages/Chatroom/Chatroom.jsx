@@ -1,7 +1,9 @@
-import React from 'react'
+import React from "react";
 
 export default function Chatroom() {
   return (
-    <div>Chatroom</div>
-  )
+    <div>
+      <iframe src="http://localhost:61506/" style={{height: "100vh", width: "100vw"}}/>
+    </div>
+  );
 }

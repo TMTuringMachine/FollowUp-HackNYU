@@ -66,7 +66,21 @@ export default function Router() {
     {
       path: "/teacher",
       element: <TeacherLayout />,
-      children: [],
+      children: [
+        {
+          path: "test",
+          element: <Test />,
+        },
+        {
+          path:"classes",
+          element:<TeacherClasses/>
+        },
+        {
+          path:"class/:id",
+          element:<TeacherClass/>
+        }
+
+      ],
     },
     {
       path: "/student",
@@ -161,4 +175,14 @@ const TeacherLayout = Loadable(
 const StudentLayout = Loadable(
   lazy(() => import("../layouts/studentLayout/studentLayout.component"))
 );
+
+
+//teacher dashboard pages
+const TeacherClasses = Loadable(
+  lazy(()=> import("../pages/TeacherClasses/TeacherClasses.component"))
+)
+
+const TeacherClass = Loadable(
+  lazy(()=>import("../pages/TeacherClass/TeacherClass.component"))
+)
 const Chatroom = Loadable(lazy(() => import("../pages/Chatroom/Chatroom")));
