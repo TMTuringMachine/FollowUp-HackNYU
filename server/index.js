@@ -10,6 +10,8 @@ dotenv.config({ path: "./config.env" });
 app.use(express.json());
 
 require("./db/conn");
+app.use("/teacher", require("./routes/teacherRoutes"));
+app.use("/student", require("./routes/studentRoutes"));
 
 app.listen(port, () => {
   console.log(`App listening on port http://localhost:${port}`);

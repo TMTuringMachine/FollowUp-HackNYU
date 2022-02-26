@@ -4,7 +4,7 @@ import shadows from "../../theme/shadows";
 const SingleTest = () => {
   return (
     <Flex
-      p="0.8rem 3rem 0.8rem 0.8rem"
+      p="0.8rem 6rem 0.8rem 0.8rem"
       m="1rem"
       flexDir="column"
       justifyContent="center"

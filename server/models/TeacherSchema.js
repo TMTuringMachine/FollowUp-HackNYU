@@ -5,11 +5,11 @@ const TeacherSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  gender:{
+  email:{
       type:String,
       required:true,
   },
-  email:{
+  gender:{
       type:String,
       required:true,
   },

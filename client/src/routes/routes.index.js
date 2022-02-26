@@ -58,12 +58,20 @@ export default function Router() {
       element: <StudentLayout />,
       children: [
         {
+          path: "tests/:id",
+          element: <Test />,
+        },
+        {
           path: "recentTests",
           element: <RecentTest />,
         },
         {
-          path: "tests/:id",
-          element: <Test />,
+          path: "announcement",
+          element: <Announcement />,
+        },
+        {
+          path: "attendence",
+          element: <Attendence />,
         },
       ],
     },
@@ -76,6 +84,12 @@ export default function Router() {
 // );
 const Test = Loadable(
   lazy(() => import("../components/RecentTests/Test.component"))
+);
+const Announcement = Loadable(
+  lazy(() => import("../components/Announcement/announcement.component"))
+);
+const Attendence = Loadable(
+  lazy(() => import("../components/Attendence/attendence.component"))
 );
 const RecentTest = Loadable(
   lazy(() => import("../components/RecentTests/RecentTests"))
