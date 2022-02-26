@@ -25,11 +25,13 @@
     "react-player": "^2.9.0",
     "react-razorpay": "^1.1.2",
     "react-redux": "^7.2.6",
+    "react-reveal": "^1.2.2",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "recharts": "^2.1.9",
     "redux": "^4.1.2",
     "redux-persist": "^6.0.0",
+    "styled-component": "^2.8.0",
     "styled-components": "^5.3.3",
     "web-vitals": "^2.1.4"
   },

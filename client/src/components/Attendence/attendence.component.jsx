@@ -19,7 +19,7 @@ export default function Attendence() {
       <Heading as="h2" m={12} size="2xl" color="purple.600">
         ATTENDENCE
       </Heading>
-      <Grid m={12} templateColumns="repeat(2, 1fr)" gap={6} m={4}>
+      <Grid templateColumns="repeat(2, 1fr)" gap={6} m={4}>
         <Text m={12} fontSize="6xl">
           68%
         </Text>

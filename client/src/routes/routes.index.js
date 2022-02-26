@@ -44,6 +44,26 @@ export default function Router() {
       element: <LandingPage />,
     },
     {
+      path: "/teacher/signup",
+      element: <TeacherSignup />,
+    },
+    {
+      path: "/student/signup",
+      element: <StudentSignup />,
+    },
+    {
+      path: "/teacher/login",
+      element: <TeacherLogin />,
+    },
+    {
+      path: "/student/login",
+      element: <StudentLogin />,
+    },
+    {
+      path: "/chat",
+      element: <Chatroom />,
+    },
+    {
       path: "/teacher",
       element: <TeacherLayout />,
       children: [
@@ -51,6 +71,15 @@ export default function Router() {
           path: "test",
           element: <Test />,
         },
+        {
+          path:"classes",
+          element:<TeacherClasses/>
+        },
+        {
+          path:"class/:id",
+          element:<TeacherClass/>
+        }
+
       ],
     },
     {
@@ -77,6 +106,10 @@ export default function Router() {
           path: "performance",
           element: <StudentPerformance />,
         },
+        {
+          path: "feedback",
+          element: <Feedback />,
+        },
       ],
     },
   ]);
@@ -101,6 +134,24 @@ const RecentTest = Loadable(
 const StudentPerformance = Loadable(
   lazy(() => import("../pages/StudentPerformance"))
 );
+const TeacherSignup = Loadable(
+  lazy(() => import("../pages/TeacherAuth/TeacherSIgnup"))
+);
+const StudentSignup = Loadable(
+  lazy(() => import("../pages/StudentAuth/StudentSignup"))
+);
+
+const TeacherLogin = Loadable(
+  lazy(() => import("../pages/TeacherAuth/TeacherLogin"))
+);
+
+const StudentLogin = Loadable(
+  lazy(() => import("../pages/StudentAuth/StudentLogin"))
+);
+
+const Feedback = Loadable(
+  lazy(() => import("../components/Feedback/feedback.components"))
+);
 //pages
 // const SignIn = Loadable(
 //   lazy(() => import("../pages/sign-in/sign-in.componsnt"))
@@ -124,3 +175,14 @@ const TeacherLayout = Loadable(
 const StudentLayout = Loadable(
   lazy(() => import("../layouts/studentLayout/studentLayout.component"))
 );
+
+
+//teacher dashboard pages
+const TeacherClasses = Loadable(
+  lazy(()=> import("../pages/TeacherClasses/TeacherClasses.component"))
+)
+
+const TeacherClass = Loadable(
+  lazy(()=>import("../pages/TeacherClass/TeacherClass.component"))
+)
+const Chatroom = Loadable(lazy(() => import("../pages/Chatroom/Chatroom")));

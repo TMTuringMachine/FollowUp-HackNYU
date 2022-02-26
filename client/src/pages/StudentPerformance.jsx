@@ -90,7 +90,7 @@ const StudentPerformance = () => {
       <Text
         fontWeight="800"
         fontSize={{ base: "1rem", md: "3.2rem" }}
-        color="#3a0ca3"
+        color="#a18bd4"
       >
         Student Performance
       </Text>

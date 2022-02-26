@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { isTeacher } = require("../middlewares/isTeacher");
+
 const {
   signup,
   login,
