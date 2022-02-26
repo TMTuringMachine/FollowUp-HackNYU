@@ -1,6 +1,8 @@
+import React,{useEffect} from 'react'
 import { Flex, Text, Box } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
 import shadows from "../../theme/shadows";
+import axios from "../../utils/axios";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 import PieChartComponent from "./PieChart";
 const data01 = [
@@ -23,6 +25,19 @@ const data02 = [
   { name: "D2", value: 50 },
 ];
 const Test = () => {
+
+    const getData = async()=>{
+      console.log("I was called")
+      const response = await axios.get("/student/getAllTests/621a560e59c8cc20cee9786f");
+      console.log(response.data.allTests[0])
+    }
+
+    useEffect(() => {
+     getData()
+    }, [])
+    
+  
+
   return (
     <Box>
       <Flex

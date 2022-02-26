@@ -12,6 +12,6 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.get("/jwtVerify", jwtVerify);
 router.post("/joinClass",joinClassByID);
-router.get("/getAllTests",getStudentTests)
+router.get("/getAllTests/:studentID",getStudentTests)
 
 module.exports = router;
