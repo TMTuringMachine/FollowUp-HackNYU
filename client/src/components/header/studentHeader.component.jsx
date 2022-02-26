@@ -45,7 +45,7 @@ const SidebarBtn = ({ url, children }) => {
       margin="12px 0"
       width="80%"
       onClick={handleClick}
-      backgroundColor={selected ? "#4CC9F0" : "#fff"}
+      backgroundColor={selected ? "#6C63FF" : "#fff"}
       color={selected ? "#fff" : "#000"}
       _hover=""
     >
@@ -118,7 +118,7 @@ const Dropdown = ({ searchQuery, courses }) => {
   );
 };
 
-const Header = () => {
+const StudentHeader = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [placement, setPlacement] = React.useState("left");
   const user = useSelector((store) => store.auth.user);
@@ -192,10 +192,10 @@ const Header = () => {
             <Text>{user?.name ? user?.name : "no name"}</Text>
           </DrawerHeader>
           <DrawerBody display="flex" flexDirection="column" alignItems="center">
-            <SidebarBtn url="/home">ALL COURSES</SidebarBtn>
-            <SidebarBtn url="/my-courses">MY COURSES</SidebarBtn>
-            <SidebarBtn url="/dashboard">MY PROFILE</SidebarBtn>
-            <SidebarBtn url="/createCourse">CREATE COURSE</SidebarBtn>
+            <SidebarBtn url="/home">TESTS</SidebarBtn>
+            <SidebarBtn url="/my-courses">PERFORMANCE</SidebarBtn>
+            <SidebarBtn url="/dashboard">ANNOUNCEMENTS</SidebarBtn>
+            <SidebarBtn url="/createCourse">FEEDBACK</SidebarBtn>
             <Button
               position="absolute"
               bottom="20px"
@@ -212,4 +212,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default StudentHeader;

@@ -2,7 +2,8 @@ import React, { useState } from "react";
 
 import { Outlet } from "react-router-dom";
 
-import Header from "../../components/header/header.component";
+import StudentHeader from "../../components/header/studentHeader.component";
+// import Header from "../../components/header/header.component";
 // import { useSelector } from "react-redux";
 import { Page, Content } from "./studentLayout.styles";
 
@@ -37,7 +38,7 @@ const StudentLayout = () => {
           }}
         /> */}
 
-        <Header />
+        <StudentHeader />
         <Content>
           <Outlet />
         </Content>
