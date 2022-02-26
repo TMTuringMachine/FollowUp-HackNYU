@@ -6,13 +6,13 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 
 //using middleware to parse json data
+
 app.use(express.json());
 
 require("./db/conn");
 app.use("/teacher", require("./routes/teacherRoutes"));
 app.use("/student", require("./routes/studentRoutes"));
 
-
 app.listen(port, () => {
-    console.log(`App listening on port http://localhost:${port}`);
-  });
+  console.log(`App listening on port http://localhost:${port}`);
+});

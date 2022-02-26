@@ -41,36 +41,40 @@ export default function Router() {
     // },
     {
       path: "/",
-      element: <LandingPage/>
+      element: <LandingPage />,
     },
     {
-      path:"/teacher",
-      element:<TeacherLayout/>,
-      children:[
+      path: "/teacher",
+      element: <TeacherLayout />,
+      children: [
         {
-          path:"test",
-          element:<Test/>
-        }
-      ]
+          path: "test",
+          element: <Test />,
+        },
+      ],
     },
     {
-      path:"/student",
-      element:<StudentLayout/>,
-      children:[
+      path: "/student",
+      element: <StudentLayout />,
+      children: [
         {
-          path:"test",
-          element:<Test/>
+          path: "tests/:id",
+          element: <Test />,
         },
         {
-          path:"announcement",
-          element:<Announcement />
+          path: "recentTests",
+          element: <RecentTest />,
         },
         {
-          path:"attendence",
-          element:<Attendence />
-        }
-      ]
-    }
+          path: "announcement",
+          element: <Announcement />,
+        },
+        {
+          path: "attendence",
+          element: <Attendence />,
+        },
+      ],
+    },
   ]);
 }
 
@@ -78,9 +82,18 @@ export default function Router() {
 // const MainLayout = Loadable(
 //   lazy(() => import("../layouts/mainLayout/mainLayout.component"))
 // );
-const Test = Loadable(lazy(() => import("../components/Test/test.component")));
-const Announcement = Loadable(lazy(() => import("../components/Announcement/announcement.component")));
-const Attendence = Loadable(lazy(() => import("../components/Attendence/attendence.component")));
+const Test = Loadable(
+  lazy(() => import("../components/RecentTests/Test.component"))
+);
+const Announcement = Loadable(
+  lazy(() => import("../components/Announcement/announcement.component"))
+);
+const Attendence = Loadable(
+  lazy(() => import("../components/Attendence/attendence.component"))
+);
+const RecentTest = Loadable(
+  lazy(() => import("../components/RecentTests/RecentTests"))
+);
 //pages
 // const SignIn = Loadable(
 //   lazy(() => import("../pages/sign-in/sign-in.componsnt"))
@@ -95,7 +108,12 @@ const Attendence = Loadable(lazy(() => import("../components/Attendence/attenden
 //   lazy(() => import("../pages/login/loginAdmin.component"))
 // );
 
-
-const LandingPage = Loadable(lazy(()=>import("../pages/LandingPage/landingpage.component")));
-const TeacherLayout = Loadable(lazy(()=>import("../layouts/teacherLayout/teacherLayout.component")));
-const StudentLayout = Loadable(lazy(()=> import("../layouts/studentLayout/studentLayout.component")));
+const LandingPage = Loadable(
+  lazy(() => import("../pages/LandingPage/landingpage.component"))
+);
+const TeacherLayout = Loadable(
+  lazy(() => import("../layouts/teacherLayout/teacherLayout.component"))
+);
+const StudentLayout = Loadable(
+  lazy(() => import("../layouts/studentLayout/studentLayout.component"))
+);
