@@ -1,17 +1,17 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 const SubjectSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-  }, 
-  totalMarks:{
-      type:Number,
-      default:100,
   },
-  class:{
-    type:Schema.Types.ObjectId,
-    ref:"CLASS"
+  totalMarks: {
+    type: Number,
+    default: 100,
+  },
+  class: {
+    type: Schema.Types.ObjectId,
+    ref: "CLASS",
   },
   // classID:[
   //   {type:Schema.Types.ObjectId,
