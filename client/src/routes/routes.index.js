@@ -60,6 +60,10 @@ export default function Router() {
       element: <StudentLogin />,
     },
     {
+      path: "/chat",
+      element: <Chatroom />,
+    },
+    {
       path: "/teacher",
       element: <TeacherLayout />,
       children: [],
@@ -87,6 +91,10 @@ export default function Router() {
         {
           path: "performance",
           element: <StudentPerformance />,
+        },
+        {
+          path: "feedback",
+          element: <Feedback />,
         },
       ],
     },
@@ -127,6 +135,9 @@ const StudentLogin = Loadable(
   lazy(() => import("../pages/StudentAuth/StudentLogin"))
 );
 
+const Feedback = Loadable(
+  lazy(() => import("../components/Feedback/feedback.components"))
+);
 //pages
 // const SignIn = Loadable(
 //   lazy(() => import("../pages/sign-in/sign-in.componsnt"))
@@ -150,3 +161,4 @@ const TeacherLayout = Loadable(
 const StudentLayout = Loadable(
   lazy(() => import("../layouts/studentLayout/studentLayout.component"))
 );
+const Chatroom = Loadable(lazy(() => import("../pages/Chatroom/Chatroom")));
