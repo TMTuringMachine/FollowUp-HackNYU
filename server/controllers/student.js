@@ -130,10 +130,6 @@ const getStudentTests = async (req, res) => {
   }
 };
 
-const getStudentTest = async (req,res)=>{
-  const {studentId,testId} = req.body;
-}
-
 
 const feedback = async (req, res) => {
   const { rating, text, class_id } = req.body;

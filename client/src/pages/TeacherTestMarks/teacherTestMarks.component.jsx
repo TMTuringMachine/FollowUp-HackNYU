@@ -11,31 +11,66 @@ import {
   Th,
   Button,
 } from "@chakra-ui/react";
-import React,{useEffect} from "react";
+import React, { useEffect, useState } from "react";
 
-import {useParams} from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
-import {getTest} from '../../hooks/useClass';
+import { getTest,setStudentMarks } from "../../hooks/useClass";
 
-const StudentMarks = () => {
+const StudentMarks = ({ test,student }) => {
+  const [subjectsData, setSubjectsData] = useState([]);
+
+  const addSubjectMarks = (sub_id, marks) => {
+    const l = subjectsData.find((a) => a.subject === sub_id);
+    if (l === undefined) {
+      setSubjectsData([
+        ...subjectsData,
+        { subject: sub_id, marksObtained: marks },
+      ]);
+    } else {
+      const ns = subjectsData.filter(a => a.subject !== sub_id);
+      setSubjectsData([
+        ...ns,
+        {subject:sub_id,marksObtained:marks}
+      ])
+    }
+  };
+
+  const handleSaveMarks = () => {
+    // console.log(subjectsData);
+    const data = {
+      studentID:student._id,
+      testID:test._id,
+      subjects:[...subjectsData]
+    }
+    setStudentMarks(data);
+    console.log(data);
+  };
+
   return (
     <Tr>
-      <Td>Aknewfk Boweisfjow Cwefolk</Td>
-      <Td>
-        <Input borderColor="#888888" maxWidth="120px" />
-      </Td>
-      <Td>
-        <Input borderColor="#888888" maxWidth="120px" />
-      </Td>
-      <Td>
-        <Input borderColor="#888888" maxWidth="120px" />
-      </Td>
-      <Td>
-        <Input borderColor="#888888" maxWidth="120px" />
-      </Td>
+      <Td>{student.name}</Td>
+      {test?.subjects.map((sub) => (
+        <Td>
+          <Input
+            borderColor="#888888"
+            maxWidth="120px"
+            onChange={(e) => {
+              addSubjectMarks(sub?._id, e.target.value);
+            }}
+          />
+        </Td>
+      ))}
 
       <Td>
-        <Button size="sm" backgroundColor="#4CC9F0" color="#fff" _hover={{}} _focus={{outline:"none"}}>
+        <Button
+          size="sm"
+          backgroundColor="#4CC9F0"
+          color="#fff"
+          _hover={{}}
+          _focus={{ outline: "none" }}
+          onClick={handleSaveMarks}
+        >
           SAVE
         </Button>
       </Td>
@@ -44,11 +79,16 @@ const StudentMarks = () => {
 };
 
 const TeacherTestMarks = () => {
-  const {testId,id} = useParams();
-  useEffect(()=>{
-    console.log(id,testId);
-    getTest(testId);
-  },[testId,id]);
+  const { testId, id } = useParams();
+  const [test, setTest] = useState(null);
+
+  useEffect(() => {
+    console.log(id, testId);
+    getTest(testId).then((res) => {
+      setTest(res);
+    });
+  }, [testId, id]);
+
   return (
     <Box padding="10px 20px 100px 20px">
       <Text
@@ -57,7 +97,7 @@ const TeacherTestMarks = () => {
         color="#4CC9F0"
         margin="20px 0 0 20px"
       >
-        CLASS B - UNIT 1
+        {test?.classID?.name}   {test?.name}
       </Text>
       <Box
         height="fit-content"
@@ -70,26 +110,22 @@ const TeacherTestMarks = () => {
         <Table>
           <Thead>
             <Th>Student/Subject</Th>
-            <Th> Subject 1</Th>
-            <Th> Subject 2</Th>
-            <Th> Subject 3</Th>
-            <Th> Subject 4</Th>
+            {test?.subjects.map((sub) => (
+              <Th>{sub.name}</Th>
+            ))}
 
             <Th>SAVE</Th>
           </Thead>
           <Tbody>
-            <StudentMarks />
-            <StudentMarks />
-            <StudentMarks />
-            <StudentMarks />
-            <StudentMarks />
-            <StudentMarks />
-            <StudentMarks />
-            <StudentMarks />
-            <StudentMarks />
-            <StudentMarks />
-
-
+            {
+              test?.classID?.students.map(student => <StudentMarks test={test} student={student}/>)
+            }
+            {/* <StudentMarks test={test} />
+            <StudentMarks test={test} />
+            <StudentMarks test={test} />
+            <StudentMarks test={test} />
+            <StudentMarks test={test} />
+            <StudentMarks test={test} /> */}
           </Tbody>
         </Table>
       </Box>

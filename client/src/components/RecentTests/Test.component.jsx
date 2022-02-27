@@ -1,44 +1,66 @@
-import React,{useEffect, useState} from 'react'
-import { Flex, Text, Box } from "@chakra-ui/layout";
+import React, { useEffect, useState } from "react";
+import {
+  Flex,
+  Text,
+  Box,
+ 
+} from "@chakra-ui/layout";
+import { Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,} from '@chakra-ui/react';
 import { Button } from "@chakra-ui/button";
 import shadows from "../../theme/shadows";
 import axios from "../../utils/axios";
-import { Bar,Legend,Tooltip,XAxis,YAxis,BarChart,CartesianGrid,ResponsiveContainer } from "recharts";
-import { useSelector} from "react-redux";
-import { useParams } from 'react-router-dom';
+import {
+  Bar,
+  Legend,
+  Tooltip,
+  XAxis,
+  YAxis,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+} from "recharts";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const Test = () => {
-  const data = []
   const { id } = useParams();
-  const user = useSelector((store)=>store.auth.user)
-  const [tests,setTests] = useState([]);
-  const [dataLen,setDataLen] = useState()
-  const getData = async()=>{
+  const user = useSelector((store) => store.auth.user);
+  const [tests, setTests] = useState([]);
+  const [subData, setSubData] = useState([]);
+  const [graphData, setGraphData] = useState(null);
+  const getData = async () => {
     const response = await axios.get(`/student/getAllTests/${user._id}`);
-    for(var i = 0;i<response.data.allTests.length;i++){
-      if(response.data.allTests[i].test._id==id){
-        setTests(response.data.allTests[i])
-        console.log(response.data.allTests[i])
-      } 
-      setDataLen(response.data.allTests.length)
-    }}
+    for (var i = 0; i < response.data.allTests.length; i++) {
+      if (response.data.allTests[i].test._id == id) {
+        console.log(response.data.allTests[i], "here ia ma= jwnfk");
+        setSubData(response.data.allTests[i].subjects);
 
+        setTests(response.data.allTests[i]);
+      }
+    }
+  };
 
   useEffect(() => {
-   getData()
-  }, [])
+    getData();
+  }, []);
 
-  for(var i = 0;i<dataLen;i++){
-    data.push({
-      name:tests?.subjects[i]?.subject?.name,
-      "Marks Obtained":tests?.subjects[i]?.marksObtained,
-      "Total Marks":tests?.subjects[i]?.subject?.totalMarks
-    })
-    console.log(data,"Data")
-  }
+  useEffect(() => {
+    console.log(subData, "this is sub data");
+    const nd = subData.map((s) => ({
+      name: s?.subject?.name,
+      "Marks Obtained": s?.marksObtained,
+      "Total Marks": s?.subject?.totalMarks,
+    }));
 
-    console.log(data)
-
+    setGraphData([...nd]);
+  }, [subData]);
 
   return (
     <Box>
@@ -57,7 +79,7 @@ const Test = () => {
           {tests?.test?.name}
         </Text>
         <Text m="0.2rem" color="gray">
-        {tests?.test?.date}
+          {tests?.test?.date}
         </Text>
         <Flex
           p="2rem"
@@ -67,26 +89,47 @@ const Test = () => {
           boxShadow={shadows.shadow3}
           justifyContent="center"
         >
-          <table style={{ width: "80%" }}>
+          {/* <table style={{ width: "80%" }}>
             <tr style={{ marginBottom: "1rem" }}>
               <th>Subject</th>
-              {tests?.subjects?.length>0?tests?.subjects.map((subject)=>{
-                return(
-                  <td>{subject.subject.name}</td>
-                )
-              }):null
-              }
+              {tests?.subjects?.length > 0
+                ? tests?.subjects.map((subject) => {
+                    return <td>{subject.subject.name}</td>;
+                  })
+                : null}
             </tr>
             <tr>
               <th>Marks</th>
-              {tests?.subjects?.length>0?tests?.subjects.map((subject)=>{
-                return(
-                  <td>{subject.marksObtained}/{subject.subject.totalMarks}</td>
-                )
-              }):null
-              }
+              {tests?.subjects?.length > 0
+                ? tests?.subjects.map((subject) => {
+                    return (
+                      <td>
+                        {subject.marksObtained}/{subject.subject.totalMarks}
+                      </td>
+                    );
+                  })
+                : null}
             </tr>
-          </table>
+          </table> */}
+          <Table>
+            <Thead>
+              <Tr>
+                <Th>Subjects</Th>
+                {
+                  subData.map(a => <Th>{a?.subject?.name}</Th>)
+                }
+              </Tr>
+              <Tr>
+                <Th>Marks</Th>
+                {
+                  subData.map(a => <Th>{a?.marksObtained}</Th>)
+                }
+              </Tr>
+            </Thead>
+          </Table>
+          
+        
+
           {/* <Button
             w="20%"
             p="0rem"
@@ -98,15 +141,21 @@ const Test = () => {
           </Button> */}
         </Flex>
         <Flex flexWrap="wrap" w="100%" h="300px">
-          <BarChart width={730} height={250} barSize={60} barGap={30} data={data}>
-  <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Bar dataKey="Marks Obtained" fill="#8884d8" />
-      <Bar dataKey="Total Marks" fill="#82ca9d" />
-</BarChart>
+          <BarChart
+            width={730}
+            height={250}
+            barSize={60}
+            barGap={30}
+            data={graphData}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="Marks Obtained" fill="#8884d8" />
+            <Bar dataKey="Total Marks" fill="#82ca9d" />
+          </BarChart>
         </Flex>
       </Flex>
     </Box>

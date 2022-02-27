@@ -74,7 +74,7 @@ export const addSubject = async (data) =>{
 }
 
 
-export const addTest = async (data) =>{
+export const addTest = async (data,navigate) =>{
   const body = JSON.stringify(data);
   const config = {
     headers: {
@@ -85,6 +85,11 @@ export const addTest = async (data) =>{
   try{
     const res = await axios.post('/teacher/addTest',body,config);
     console.log(res,"Add test response");
+    if(res.data.ok){
+      console.log(res.data);
+      navigate(`/teacher/class/${data.classID}/test/${res.data.saveTest._id}`);
+
+    }
   }catch(err){
     console.log(err);
   }
@@ -95,10 +100,11 @@ export const getTest = async (testId) => {
   const res = await axios.get(`/teacher/getOneTest/${testId}`);
   console.log(res,"class test response");
   if(res.data.ok){
-    console.log(res.data)
+    return res.data.test;
   }
   return null;
 }
+
 
 export const setStudentMarks = async (data) => {
   const body = JSON.stringify(data);
@@ -108,12 +114,20 @@ export const setStudentMarks = async (data) => {
     },
   };
 
-
   try{
     const res = await axios.post('/teacher/setMarks',body,config);
     console.log(res,"student set marks response");
   }catch(err){
     console.log(err);
+  }
+}
+
+export const getAllTests = async (studentId) => {
+  const res = await axios.get(`/student/getAllTests/${studentId}`);
+  console.log(res,"all test response");
+  if(res.data.ok){
+    console.log(res.data);
+    return res.data.allTests;
   }
 }
 

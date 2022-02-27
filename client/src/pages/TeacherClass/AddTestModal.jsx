@@ -13,7 +13,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "react-time-picker";
 import styled from "styled-components";
-
+import {useNavigate} from 'react-router-dom';
 import {addTest} from '../../hooks/useClass';
 
 export const CustomTimePicker = styled(TimePicker)({
@@ -42,6 +42,8 @@ const AddTestModal = ({ state, toggleModal, subjects, classId }) => {
     time: "8:00",
   });
 
+  const navigate = useNavigate();
+
   const handleInput = (e) => {
     setTestData({ ...testData, [e.target.name]: e.target.value });
   };
@@ -53,7 +55,7 @@ const AddTestModal = ({ state, toggleModal, subjects, classId }) => {
       classID:classId
     }
     console.log(data);
-    addTest(data);
+    addTest(data,navigate);
   };
 
   const handleCheck = (id,isChecked) => {
@@ -62,7 +64,6 @@ const AddTestModal = ({ state, toggleModal, subjects, classId }) => {
     }else{
       const newSubjects = testData.subjects.filter(s => s !== id);
       setTestData({...testData,subjects:[...newSubjects]})
-
     }
   }
 
