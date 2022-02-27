@@ -39,6 +39,12 @@ const ClassSchema = new mongoose.Schema({
       Text: String,
     },
   ],
+  tests:[
+    {
+      type:Schema.Types.ObjectId,
+      ref:'TEST',
+    }
+  ]
 });
 
 const Class = mongoose.model("CLASS", ClassSchema);

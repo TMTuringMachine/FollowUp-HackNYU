@@ -1,8 +1,33 @@
-import React from "react";
+import React,{useState} from "react";
 import { Box, Text, Input, Button } from "@chakra-ui/react";
 import { Modal } from "@mui/material";
+import { addSubject } from "../../hooks/useClass";
 
-const AddSubjectModal = ({ state, toggleModal }) => {
+const AddSubjectModal = ({ state, toggleModal,classId }) => {
+  const [subjectData, setSubjectData] = useState({
+    name: "",
+    totalMarks: 0,
+  });
+
+  const handleInput = (e) => {
+    setSubjectData({ ...subjectData, [e.target.name]: e.target.value });
+  };
+
+  const handleAddSubject = () =>{
+    const data = {
+      ...subjectData,
+      classID:classId
+    }
+    console.log(data);
+    addSubject(data);
+    setSubjectData({
+      name:"",
+      totalMarks:0
+    })
+    toggleModal();
+
+  }
+
   return (
     <Modal open={state} onClose={toggleModal}>
       <Box
@@ -29,8 +54,23 @@ const AddSubjectModal = ({ state, toggleModal }) => {
           ADD SUBJECT TO CLASS
         </Text>
         <Box width="90%">
-          <Input placeholder="Subject Name" borderColor="#888888" width="80%" />
-          <Input placeholder="Total Marks" borderColor="#888888" width="50%" marginTop="15px"/>
+          <Input
+            placeholder="Subject Name"
+            borderColor="#888888"
+            width="80%"
+            name="name"
+            value={subjectData.name}
+            onChange={handleInput}
+          />
+          <Input
+            placeholder="Total Marks"
+            borderColor="#888888"
+            width="50%"
+            marginTop="15px"
+            name="totalMarks"
+            value={subjectData.totalMarks}
+            onChange={handleInput}
+          />
         </Box>
 
         <Button
@@ -39,6 +79,7 @@ const AddSubjectModal = ({ state, toggleModal }) => {
           _hover={{}}
           borderRadius="5px"
           margin="20px 0"
+          onClick={handleAddSubject}
         >
           ADD
         </Button>

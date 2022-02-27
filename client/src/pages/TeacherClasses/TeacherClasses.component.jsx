@@ -1,11 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, Box, SimpleGrid, Input, Button } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import ClassOverview from "../../components/ClassOverview/classOverview.component";
-
+import {useNavigate} from 'react-router-dom';
+import { getAllClasses, createClass } from "../../hooks/useClass";
+import { useSelector } from "react-redux";
 import { Modal } from "@mui/material";
 
-const ClassModal = ({ state, toggleModal }) => {
+const ClassModal = ({ state, toggleModal, teacherId }) => {
+  const [createClassName, setCreateClassName] = useState("");
+  const navigate = useNavigate();
+
+  const handleInput = (e) => {
+    setCreateClassName(e.target.value);
+  };
+
+  const handleCreateClass = () => {
+    const data = {
+      name: createClassName,
+      teacher: teacherId,
+    };
+
+    // console.log(data);
+
+    createClass(data,navigate);
+  };
+
   return (
     <Modal open={state} onClose={toggleModal}>
       <Box
@@ -31,13 +51,20 @@ const ClassModal = ({ state, toggleModal }) => {
         >
           CREATE A CLASS
         </Text>
-        <Input placeholder="Class Name" borderColor="#888888" width="80%" />
+        <Input
+          placeholder="Class Name"
+          borderColor="#888888"
+          width="80%"
+          value={createClassName}
+          onChange={handleInput}
+        />
         <Button
           backgroundColor="#4CC9F0"
           color="#fff"
           _hover={{}}
           borderRadius="5px"
           margin="20px 0"
+          onClick={handleCreateClass}
         >
           CREATE
         </Button>
@@ -48,10 +75,19 @@ const ClassModal = ({ state, toggleModal }) => {
 
 const TeacherClasses = () => {
   const [showClassModal, setShowClassModal] = useState(false);
+  const [classes, setClasses] = useState([]);
 
   const toggleClassModal = () => {
     setShowClassModal(!showClassModal);
   };
+
+  const { user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    getAllClasses(user._id).then((res) => {
+      setClasses(res);
+    });
+  }, [user]);
 
   return (
     <Box padding="50px 20px 100px 20px">
@@ -80,15 +116,15 @@ const TeacherClasses = () => {
       >
         <Icon icon="carbon:add" fontSize="4em" color="#4CC9F0" />
       </Box>
-      <ClassModal state={showClassModal} toggleModal={toggleClassModal} />
+      <ClassModal
+        state={showClassModal}
+        toggleModal={toggleClassModal}
+        teacherId={user._id}
+      />
       <SimpleGrid columns={3} spacing={20}>
-        <ClassOverview />
-        <ClassOverview />
-        <ClassOverview />
-        <ClassOverview />
-        <ClassOverview />
-        <ClassOverview />
-        <ClassOverview />
+        {classes.length > 0
+          ? classes.map((cls) => <ClassOverview classData={cls} />)
+          : null}
       </SimpleGrid>
     </Box>
   );

@@ -113,7 +113,11 @@ const createClass = async (req, res) => {
           if (updatedTeacher)
             res
               .status(200)
-              .send({ ok: true, message: "Class Created Successfully!" });
+              .send({
+                ok: true,
+                message: "Class Created Successfully!",
+                saveClass,
+              });
         } else
           res
             .status(200)
@@ -161,6 +165,11 @@ const addTest = async (req, res) => {
     if (!testExists) {
       const newTest = new Test({ name, subjects, classID, date, time });
       const saveTest = await newTest.save();
+
+      const classRef = await Class.findById(classID);
+      classRef.tests.push(saveTest);
+
+      await classRef.save();
 
       if (saveTest) res.status(200).send({ ok: true, message: "Test Added!" });
     } else {
