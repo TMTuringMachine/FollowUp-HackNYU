@@ -33,7 +33,7 @@ const TeacherLogin = () => {
           setIsError(false);
         }, 3000);
       } else {
-        navigate("/");
+        navigate("/teacher/classes");
       }
     });
   };

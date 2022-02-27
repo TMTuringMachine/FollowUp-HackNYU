@@ -48,7 +48,7 @@ const login = async (req, res) => {
           },
           process.env.JWT_PRIVATE_KEY,
           {
-            expiresIn: "300m",
+            expiresIn: "14000000000m",
           }
         );
         return res.status(200).json({
@@ -92,17 +92,18 @@ const joinClassByID = async (req, res) => {
       const updateStudent = await Student.findByIdAndUpdate(getStudent._id, {
         class: classID,
       });
-      if (updateStudent){
-        const getClass = await Class.findById(classID)
-        if(getClass){
-          getClass.students.push(studentID)
-          const addedStudent = await Class.findByIdAndUpdate(classID,{students:getClass.students})
+      if (updateStudent) {
+        const getClass = await Class.findById(classID);
+        if (getClass) {
+          getClass.students.push(studentID);
+          const addedStudent = await Class.findByIdAndUpdate(classID, {
+            students: getClass.students,
+          });
         }
         res
-        .status(200)
-        .json({ ok: true, message: "Class Joined", updateStudent });
+          .status(200)
+          .json({ ok: true, message: "Class Joined", updateStudent });
       }
-        
     } else {
       res.status(200).json({ ok: false, message: "Student Doesnt Exist" });
     }
@@ -118,13 +119,11 @@ const getStudentTests = async (req, res) => {
       .populate("tests.test")
       .populate("tests.subjects.subject");
     if (getStudent)
-      res
-        .status(200)
-        .json({
-          ok: true,
-          message: `All Tests of ${getStudent.name}`,
-          allTests: getStudent.tests,
-        });
+      res.status(200).json({
+        ok: true,
+        message: `All Tests of ${getStudent.name}`,
+        allTests: getStudent.tests,
+      });
   } catch (error) {
     console.log(error);
   }
@@ -147,18 +146,18 @@ const feedback = async (req, res) => {
   }
 };
 
-const getAttendance = async(req,res)=>{
-  const {id} = req.params;
+const getAttendance = async (req, res) => {
+  const { id } = req.params;
   try {
     const student = await Student.findById(id);
-    if(student){
-      const attendance = student.attendance
-      res.send({ok:true,attendance})
+    if (student) {
+      const attendance = student.attendance;
+      res.send({ ok: true, attendance });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 module.exports = {
   signup,
@@ -167,5 +166,5 @@ module.exports = {
   joinClassByID,
   getStudentTests,
   feedback,
-  getAttendance
+  getAttendance,
 };

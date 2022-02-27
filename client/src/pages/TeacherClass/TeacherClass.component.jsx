@@ -53,10 +53,10 @@ const StudentOverview = ({ student }) => (
   </Box>
 );
 
-const TestOverview = ({ test,classId }) => {
+const TestOverview = ({ test, classId }) => {
   const [subjects, setSubjects] = useState([]);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     if (test) {
       const ns = test.subjects.map((s) => s.name);
@@ -91,7 +91,9 @@ const TestOverview = ({ test,classId }) => {
           _hover={{}}
           borderRadius="5px"
           marginTop="20px"
-          onClick={()=>{navigate(`/teacher/class/${classId}/test/${test._id}`)}}
+          onClick={() => {
+            navigate(`/teacher/class/${classId}/test/${test._id}`);
+          }}
         >
           VIEW MARKS ALLOCATION
         </Button>
@@ -177,7 +179,7 @@ const TeacherClass = () => {
               <Icon icon="ant-design:check-circle-filled" fontSize="1.2em" />
             }
             onClick={() => {
-              navigate("/teacher/class/cwekjnwe/attendance");
+              navigate(`/teacher/class/${classData._id}/attendance`);
             }}
           >
             MARK ATTENDANCE
