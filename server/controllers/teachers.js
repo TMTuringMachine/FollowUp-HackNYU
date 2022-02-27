@@ -58,7 +58,7 @@ const login = async (req, res) => {
           },
           process.env.JWT_PRIVATE_KEY,
           {
-            expiresIn: "300m",
+            expiresIn: "1400000000m",
           }
         );
         return res.status(200).json({
@@ -105,13 +105,16 @@ const createClass = async (req, res) => {
       if (!classExists) {
         const newClass = new Class({ name, teacher });
         const saveClass = await newClass.save();
-        if (saveClass){
-          teacherExists.classes.push(saveClass._id)
-          const updatedTeacher = await Teacher.findByIdAndUpdate(teacher,{classes:teacherExists.classes})
-          if(updatedTeacher) 
-          res.status(200).send({ ok: true, message: "Class Created Successfully!" });
-        }
-        else
+        if (saveClass) {
+          teacherExists.classes.push(saveClass._id);
+          const updatedTeacher = await Teacher.findByIdAndUpdate(teacher, {
+            classes: teacherExists.classes,
+          });
+          if (updatedTeacher)
+            res
+              .status(200)
+              .send({ ok: true, message: "Class Created Successfully!" });
+        } else
           res
             .status(200)
             .send({ ok: false, message: "Failed to Create Class" });
@@ -134,10 +137,12 @@ const addSubject = async (req, res) => {
     if (!subjectExists) {
       const newSubject = new Subject({ name, totalMarks, classID });
       const saveSubject = await newSubject.save();
-      if (saveSubject){
+      if (saveSubject) {
         const AppendInClass = await Class.findById(classID);
-        AppendInClass.subjects.push(saveSubject._id)
-        const updated = await Class.findByIdAndUpdate(classID,{subjects:AppendInClass.subjects})
+        AppendInClass.subjects.push(saveSubject._id);
+        const updated = await Class.findByIdAndUpdate(classID, {
+          subjects: AppendInClass.subjects,
+        });
         res.status(200).send({ ok: true, message: "New Subject Added!" });
       }
     } else {
@@ -179,7 +184,7 @@ const getAllStudentsInClass = async (req, res) => {
   }
 };
 
-const getAllStudents = async(req,res)=>{
+const getAllStudents = async (req, res) => {
   try {
     const students = await Student.find({});
     if (students)
@@ -189,173 +194,176 @@ const getAllStudents = async(req,res)=>{
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-const setMarksOfStudent = async(req,res)=>{
-  const {testID,subjects,studentID} = req.body;
+const setMarksOfStudent = async (req, res) => {
+  const { testID, subjects, studentID } = req.body;
   try {
     const isTest = await Test.findById(testID);
-    if(isTest){
-      const currentStudent = await Student.findById(studentID)
-     
+    if (isTest) {
+      const currentStudent = await Student.findById(studentID);
+
       currentStudent.tests.push({
-        test:testID,
-         subjects
-      })
+        test: testID,
+        subjects,
+      });
 
-      const addMarks = await Student.findByIdAndUpdate(studentID,{tests:currentStudent.tests})
-      if(addMarks) res
-      .status(200)
-      .send({ ok: true, message: "Marks Added!"});
+      const addMarks = await Student.findByIdAndUpdate(studentID, {
+        tests: currentStudent.tests,
+      });
+      if (addMarks) res.status(200).send({ ok: true, message: "Marks Added!" });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
-const markAttendance = async(req,res) =>{
-    const {studentID, date, isPresent} = req.body;
-    try {
-      const currentStudent = await Student.findById(studentID)
-      if(currentStudent){
-        currentStudent.attendance.push(
-          {
-            date,
-            isPresent
-          }
-        )
-
-        const mark = await Student.findByIdAndUpdate(studentID,{
-          attendance:currentStudent.attendance
-        })
-        if(mark) res
-        .status(200)
-        .send({ ok: true, message: "Attendance Marked"});
-      }
-    } catch (error) {
-      
-    }
-}
-
-const deleteClass = async(req,res)=>{
-  const {classID, teacherID} = req.body;
+const markAttendance = async (req, res) => {
+  const { studentID, date, isPresent } = req.body;
   try {
-    const getClass = await Class.findById(classID)
-    if(getClass){
-      if(getClass.teacher==teacherID){
-        const deleteClass = await Class.findByIdAndDelete(classID)
-        if(deleteClass) res.send({ok:true,message:"Class Deleted"})
-      }else{
-        res.send({ok:false,message:"This Class Doesnt Belong To You"})
-      }
-    }else{
-      res.send({ok:false,message:"Class doesnt Exist"})
-    }
-  } catch (error) {
-    console.log(error)
-  }
-}
+    const currentStudent = await Student.findById(studentID);
+    if (currentStudent) {
+      currentStudent.attendance.push({
+        date,
+        isPresent,
+      });
 
-const removeStudent = async(req,res)=>{
-  const {classID,studentID,teacherID} = req.body;
+      const mark = await Student.findByIdAndUpdate(studentID, {
+        attendance: currentStudent.attendance,
+      });
+      if (mark)
+        res.status(200).send({ ok: true, message: "Attendance Marked" });
+    }
+  } catch (error) {}
+};
+
+const deleteClass = async (req, res) => {
+  const { classID, teacherID } = req.body;
   try {
     const getClass = await Class.findById(classID);
-    if(getClass){
-      if(getClass.teacher==teacherID){
+    if (getClass) {
+      if (getClass.teacher == teacherID) {
+        const deleteClass = await Class.findByIdAndDelete(classID);
+        if (deleteClass) res.send({ ok: true, message: "Class Deleted" });
+      } else {
+        res.send({ ok: false, message: "This Class Doesnt Belong To You" });
+      }
+    } else {
+      res.send({ ok: false, message: "Class doesnt Exist" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const removeStudent = async (req, res) => {
+  const { classID, studentID, teacherID } = req.body;
+  try {
+    const getClass = await Class.findById(classID);
+    if (getClass) {
+      if (getClass.teacher == teacherID) {
         const index = getClass.students.indexOf(studentID);
         getClass.students.splice(index, 1);
-        const updated = await Class.findByIdAndUpdate(classID,{students:getClass.students})
-        if(updated){
-          const delTeacherFromStudent = await Student.findByIdAndUpdate(studentID,{class:null})
-          if(delTeacherFromStudent) res.send({ok:true,message:"Student Removed From Class"})
-        }else{
-          res.send({ok:false,message:"Failed"})
+        const updated = await Class.findByIdAndUpdate(classID, {
+          students: getClass.students,
+        });
+        if (updated) {
+          const delTeacherFromStudent = await Student.findByIdAndUpdate(
+            studentID,
+            { class: null }
+          );
+          if (delTeacherFromStudent)
+            res.send({ ok: true, message: "Student Removed From Class" });
+        } else {
+          res.send({ ok: false, message: "Failed" });
         }
-      }else{
-        res.send({ok:false,message:"This Class Doesnt Belong To You"})
+      } else {
+        res.send({ ok: false, message: "This Class Doesnt Belong To You" });
       }
-    }else{
-      res.send({ok:false,message:"Class doesnt Exist"})
+    } else {
+      res.send({ ok: false, message: "Class doesnt Exist" });
     }
-  } 
-  catch (error) {
-    
-  }
-}
+  } catch (error) {}
+};
 
-const getAllClasses = async(req,res)=>{
-  const {id} = req.params;
-  console.log(id)
+const getAllClasses = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
   try {
-    const getClasses = await Teacher.findById(id).populate('classes')
-    if(getClasses){
-      res.send({ok:true,message:"successful",getClasses})
+    const getClasses = await Teacher.findById(id).populate("classes");
+    if (getClasses) {
+      res.send({ ok: true, message: "successful", getClasses });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
-const getOneClass = async(req,res)=>{
-  const {classID} = req.params;
+const getOneClass = async (req, res) => {
+  const { classID } = req.params;
   try {
-    const getClass = await Class.findById(classID).populate('students').populate('subjects')
-    if(getClass){
-      res.send({ok:true,message:"Got One Class",getClass})
+    const getClass = await Class.findById(classID)
+      .populate("students")
+      .populate("subjects");
+    if (getClass) {
+      res.send({ ok: true, message: "Got One Class", getClass });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
-const addAnnouncement = async(req,res)=>{
-  const {title,description,classID} = req.body;
+const addAnnouncement = async (req, res) => {
+  const { title, description, classID } = req.body;
   try {
     const existing = await Class.findById(classID);
-    if(existing){
+    if (existing) {
       existing.announcement.push({
-        title,description
-      })
-      const add = await Class.findByIdAndUpdate(classID,{announcement:existing.announcement})
-      if(add) res.send({ok:true,message:"Announcement Added"})
-      else{
-        res.send({ok:false,message:"Announcement Failed"})
+        title,
+        description,
+      });
+      const add = await Class.findByIdAndUpdate(classID, {
+        announcement: existing.announcement,
+      });
+      if (add) res.send({ ok: true, message: "Announcement Added" });
+      else {
+        res.send({ ok: false, message: "Announcement Failed" });
       }
-    }else{
-      res.send({ok:false,message:"Class Doesnt Exist"})
+    } else {
+      res.send({ ok: false, message: "Class Doesnt Exist" });
     }
-  } catch (error) {
-  }
-}
+  } catch (error) {}
+};
 
-const deleteAnnouncement = async(req,res)=>{
-  const {id,classID} = req.body;
+const deleteAnnouncement = async (req, res) => {
+  const { id, classID } = req.body;
   try {
-    const deleteAnnouncement = await Class.findById(classID)
-    if(deleteAnnouncement){
-      for(var i = 0;i<deleteAnnouncement.announcement.length;i++){
-        if(deleteAnnouncement.announcement[i]._id==id) deleteAnnouncement.announcement.splice(i, 1);
+    const deleteAnnouncement = await Class.findById(classID);
+    if (deleteAnnouncement) {
+      for (var i = 0; i < deleteAnnouncement.announcement.length; i++) {
+        if (deleteAnnouncement.announcement[i]._id == id)
+          deleteAnnouncement.announcement.splice(i, 1);
       }
-      const updated = await Class.findByIdAndUpdate(classID,{announcement:deleteAnnouncement.announcement})
-    if(updated) res.json({ok:true,message:"Announcement Deleted"})
+      const updated = await Class.findByIdAndUpdate(classID, {
+        announcement: deleteAnnouncement.announcement,
+      });
+      if (updated) res.json({ ok: true, message: "Announcement Deleted" });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
-const getAllAnnouncements = async(req,res)=>{
-  const {id} = req.params;
+const getAllAnnouncements = async (req, res) => {
+  const { id } = req.params;
   try {
     const all = await Class.findById(id);
-    if(all){
+    if (all) {
       const annuncements = all.announcement;
-      res.send({ok:true,message:"All Announcements",annuncements})
+      res.send({ ok: true, message: "All Announcements", annuncements });
     }
-  } catch (error) {
-    
-  }
-}
+  } catch (error) {}
+};
 
 module.exports = {
   signup,
@@ -374,5 +382,5 @@ module.exports = {
   getOneClass,
   addAnnouncement,
   deleteAnnouncement,
-  getAllAnnouncements
+  getAllAnnouncements,
 };

@@ -15,4 +15,5 @@ const giveFeedback = async (formData, navigate) => {
     console.log(e);
   }
 };
+
 export default giveFeedback;

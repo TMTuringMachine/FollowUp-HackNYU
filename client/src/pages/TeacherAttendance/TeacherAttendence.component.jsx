@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Text,
@@ -19,17 +19,18 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
 
+const DatePickerContainer = styled("div")(() => ({
+  margin: "20px 0 0 20px",
+  fontSize: "1.5em",
 
-const DatePickerContainer = styled("div")(()=>({
-    margin:"20px 0 0 20px",
-    fontSize:'1.5em',
-
-    '& .react-datepicker-wrapper':{
-        display:'inline',
-    },
-}))
+  "& .react-datepicker-wrapper": {
+    display: "inline",
+  },
+}));
 
 const TeacherAttendance = () => {
+  useEffect(() => {}, []);
+
   const [startDate, setStartDate] = useState(new Date());
   return (
     <Box padding="10px 20px 100px 20px">
@@ -41,7 +42,7 @@ const TeacherAttendance = () => {
       >
         CLASS B - ATTENDANCE
       </Text>
-      <DatePickerContainer >
+      <DatePickerContainer>
         <Text>Date:</Text>
         <DatePicker
           selected={startDate}
