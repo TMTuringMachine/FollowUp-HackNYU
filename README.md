@@ -13,13 +13,13 @@ APPNAME is a tool to help you manage your class if you are a teacher or check yo
 - React Js: For frontend
 - Node Js and Express Js: For backend
 - MongoDB: For database
-- Hedera: For smart contract and user information
+- Hedera’s testnet: For smart contract and chatroom
 - Rechart: For graph
 - ChakraUI and Framer Motion: For UI and animation
 
 ## 🔐 MLH- Best Blockchain Project Using Hedera
 
-We are using Hedera to make a decentralized chatroom. Hedera is a decentralized public network that utilizes the Hashgraph consensus algorithm to overcome the traditional limitations of blockchain and allow one to create the next era of fast, fair, and secure applications.
+We are using **Hedera’s testnet** to make a decentralized chatroom. Hedera is a decentralized public network that utilizes the Hashgraph consensus algorithm to overcome the traditional limitations of blockchain and allow one to create the next era of fast, fair, and secure applications.
 
 ## 🤼 Most Creative Use of GitHub
 
@@ -32,7 +32,7 @@ We are using GitHub for the following reasons:
 
 ## 🖼 Best Use of Figma by Figma
 
-We are using Figma for prototyping and designing the project. Figma makes it very easy to create a design and prototype it in real-time.
+We are using Figma for **prototyping and designing** the project. Figma makes it very easy to create a design and prototype it in real-time.
 
 ## 🌐 Best Domain Name from Domain.com
 
@@ -59,7 +59,7 @@ We are using Figma for prototyping and designing the project. Figma makes it ver
 - How to work with MERN stack.
 
 ## 🚀 What's next for APPNAME
-<!-- JJth<njjusbbht<<sd>>> -->
+
 - A mobile app version
 
 ## Resources

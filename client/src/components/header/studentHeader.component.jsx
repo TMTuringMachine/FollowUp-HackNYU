@@ -179,11 +179,9 @@ const StudentHeader = () => {
             alignItems="center"
           >
             <Avatar
-              name="Dan Abrahmov"
               src={
                 user?.image
-                  ? user?.image
-                  : "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fprincessamo321%2Fdefault-profile-pictures%2F&psig=AOvVaw2IMy6YjfVAFfQtr8uDzfGi&ust=1642947200223000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCNDL87jFxfUCFQAAAAAdAAAAABAD"
+                 
               }
               height="170px"
               width="170px"
