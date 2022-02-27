@@ -111,13 +111,11 @@ const createClass = async (req, res) => {
             classes: teacherExists.classes,
           });
           if (updatedTeacher)
-            res
-              .status(200)
-              .send({
-                ok: true,
-                message: "Class Created Successfully!",
-                saveClass,
-              });
+            res.status(200).send({
+              ok: true,
+              message: "Class Created Successfully!",
+              saveClass,
+            });
         } else
           res
             .status(200)
@@ -171,7 +169,8 @@ const addTest = async (req, res) => {
 
       await classRef.save();
 
-      if (saveTest) res.status(200).send({ ok: true, message: "Test Added!" });
+      if (saveTest)
+        res.status(200).send({ ok: true, message: "Test Added!", saveTest });
     } else {
       res.status(200).send({ ok: false, message: "Test Already Exists" });
     }
@@ -313,7 +312,9 @@ const getOneClass = async (req, res) => {
   try {
     const getClass = await Class.findById(classID)
       .populate("students")
-      .populate("subjects");
+      .populate("subjects")
+      .populate("tests")
+      .populate({ path: "tests", populate: "subjects" });
     if (getClass) {
       res.send({ ok: true, message: "Got One Class", getClass });
     }
@@ -368,10 +369,24 @@ const getAllAnnouncements = async (req, res) => {
   try {
     const all = await Class.findById(id);
     if (all) {
-      const annuncements = all.announcement;
-      res.send({ ok: true, message: "All Announcements", annuncements });
+      const announcements = all.announcement;
+      res.send({ ok: true, message: "All Announcements", announcements });
     }
   } catch (error) {}
+};
+
+const getOneTest = async (req, res) => {
+  const { testId } = req.params;
+  try {
+    const test = await Test.findById(testId)
+      .populate("subjects")
+      .populate("classID").populate({path:"classID",populate:"students"})
+    if (test) {
+      res.send({ ok: true, message: "Test data", test });
+    }
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 module.exports = {
@@ -392,4 +407,5 @@ module.exports = {
   addAnnouncement,
   deleteAnnouncement,
   getAllAnnouncements,
+  getOneTest,
 };

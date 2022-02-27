@@ -75,7 +75,7 @@ const jwtVerify = async (req, res) => {
 
   const decodeToken = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
   if (decodeToken) {
-    const student = await Student.findById(decodeToken._id);
+    const student = await Student.findById(decodeToken._id).populate('class');
     //   .populate(
     //     "myEnrolledCourses.courseID"
     //   );
@@ -128,6 +128,11 @@ const getStudentTests = async (req, res) => {
     console.log(error);
   }
 };
+
+const getStudentTest = async (req,res)=>{
+  const {studentId,testId} = req.body;
+}
+
 
 const feedback = async (req, res) => {
   const { rating, text, class_id } = req.body;

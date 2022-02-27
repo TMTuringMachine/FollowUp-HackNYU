@@ -1,8 +1,36 @@
-import React from "react";
-import { Box, Text, Input, Button,Textarea } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Box, Text, Input, Button, Textarea } from "@chakra-ui/react";
 import { Modal } from "@mui/material";
 
-const AddAnnouncementModal = ({ state, toggleModal }) => {
+import {addAnnouncement} from '../../hooks/useClass';
+
+const AddAnnouncementModal = ({ state, toggleModal,classId }) => {
+  const [announcementData, setAnnouncementData] = useState({
+    title: "",
+    description: "",
+  });
+
+  const handleInput = (e) => {
+    setAnnouncementData({
+      ...announcementData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleAddAnnouncement = () => {
+    const data = {
+      ...announcementData,
+      classID:classId
+    }
+    console.log(data)
+    addAnnouncement(data);
+    setAnnouncementData({
+      title:"",
+      description:"",
+    })
+    toggleModal();
+  }
+
   return (
     <Modal open={state} onClose={toggleModal}>
       <Box
@@ -29,8 +57,25 @@ const AddAnnouncementModal = ({ state, toggleModal }) => {
           ADD ANNOUNCEMENT
         </Text>
         <Box width="90%">
-          <Textarea placeholder="Announcement details..." borderColor="#888888" width="100%" size="lg"/>
-          
+          <Input
+            placeholder="Announcement title"
+            borderColor="#888888"
+            width="100%"
+            marginBottom="20px"
+            name="title"
+            onChange={handleInput}
+            value={announcementData.title}
+          />
+          <Textarea
+            placeholder="Announcement details..."
+            borderColor="#888888"
+            width="100%"
+            rows={5}
+            size="lg"
+            name="description"
+            onChange={handleInput}
+            value={announcementData.description}
+          />
         </Box>
 
         <Button
@@ -39,6 +84,7 @@ const AddAnnouncementModal = ({ state, toggleModal }) => {
           _hover={{}}
           borderRadius="5px"
           margin="20px 0"
+          onClick={handleAddAnnouncement}
         >
           ANNOUNCE
         </Button>

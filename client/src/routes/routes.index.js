@@ -81,7 +81,7 @@ export default function Router() {
           element: <TeacherClass />,
         },
         {
-          path: "class/:id/test",
+          path: "class/:id/test/:testId",
           element: <TeacherTestMarks />,
         },
         {

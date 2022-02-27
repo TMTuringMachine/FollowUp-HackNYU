@@ -81,7 +81,32 @@ export const addTest = async (data) => {
 
   try {
     const res = await axios.post("/teacher/addTest", body, config);
-    console.log(res, "Add subject response");
+    console.log(res, "Add test response");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getTest = async (testId) => {
+  const res = await axios.get(`/teacher/getOneTest/${testId}`);
+  console.log(res, "class test response");
+  if (res.data.ok) {
+    console.log(res.data);
+  }
+  return null;
+};
+
+export const setStudentMarks = async (data) => {
+  const body = JSON.stringify(data);
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+
+  try {
+    const res = await axios.post("/teacher/setMarks", body, config);
+    console.log(res, "student set marks response");
   } catch (err) {
     console.log(err);
   }
@@ -98,6 +123,30 @@ const markAttendance = async (formData) => {
     const res = await axios.post("teacher/markAttendance", body, config);
     console.log(res);
   } catch (e) {}
+};
+
+export const addAnnouncement = async (data) => {
+  const body = JSON.stringify(data);
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+  try {
+    const res = await axios.post("/teacher/addAnnouncement", body, config);
+    console.log(res, "announcement response");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getAllAnnouncements = async (classId) => {
+  const res = await axios.get(`/teacher/getAllAnnouncements/${classId}`);
+  console.log(res, "get announcement response");
+
+  if (res.data.ok) {
+    return res.data.announcements;
+  }
 };
 
 export default giveFeedback;
