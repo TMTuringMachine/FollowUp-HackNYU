@@ -191,7 +191,7 @@ const TeacherHeader = () => {
           </DrawerHeader>
           <DrawerBody display="flex" flexDirection="column" alignItems="center">
             <SidebarBtn url="/teacher/classes">ALL COURSES</SidebarBtn>
-            <SidebarBtn url="/my-courses">MY PROFILE</SidebarBtn>
+            <SidebarBtn url="/teacher/teacherDashboard">MY PROFILE</SidebarBtn>
             
             <Button
               position="absolute"
