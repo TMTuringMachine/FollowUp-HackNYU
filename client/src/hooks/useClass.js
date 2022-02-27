@@ -112,7 +112,7 @@ export const setStudentMarks = async (data) => {
   }
 };
 
-const markAttendance = async (formData) => {
+export const markAttendance = async (formData, navigate) => {
   try {
     const body = JSON.stringify(formData);
     const config = {
@@ -122,6 +122,7 @@ const markAttendance = async (formData) => {
     };
     const res = await axios.post("teacher/markAttendance", body, config);
     console.log(res);
+    navigate("/teacher/classes");
   } catch (e) {}
 };
 

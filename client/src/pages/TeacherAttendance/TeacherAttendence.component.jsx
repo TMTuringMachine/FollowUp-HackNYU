@@ -13,13 +13,14 @@ import {
   Checkbox,
   Button,
 } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
 import { getClass } from "../../hooks/useClass";
+import { markAttendance } from "../../hooks/useClass";
 
 const DatePickerContainer = styled("div")(() => ({
   margin: "20px 0 0 20px",
@@ -36,6 +37,7 @@ const TeacherAttendance = () => {
   const [attendanceData, setAttendanceData] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
 
+  const navigate = useNavigate();
   useEffect(() => {
     const classId = location.pathname.slice(15, 39);
     console.log(classId);
@@ -65,6 +67,10 @@ const TeacherAttendance = () => {
     });
     setAttendanceData(newAtten);
     console.log(attendanceData);
+  };
+
+  const onSubmitHandler = () => {
+    markAttendance(attendanceData, navigate);
   };
 
   return (
@@ -118,7 +124,13 @@ const TeacherAttendance = () => {
             })}
           </Tbody>
         </Table>
-        <Button color="white" backgroundColor="#4cc9f0" ml="1rem" mt="2rem">
+        <Button
+          onClick={onSubmitHandler}
+          color="white"
+          backgroundColor="#4cc9f0"
+          ml="1rem"
+          mt="2rem"
+        >
           Submit Attendance
         </Button>
       </Box>
