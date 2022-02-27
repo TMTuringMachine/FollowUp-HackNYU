@@ -56,8 +56,8 @@ const LandingPage = () => {
           <Lottie options={defaultOptions} height="100%" width="100%" />
         </Box>
         <Box>
-          <Text fontWeight={700} fontSize="7xl">
-            WELCOME TO STUDIFY !
+          <Text fontWeight={700} fontSize="6xl">
+            WELCOME TO FOLLOWUP !
           </Text>
 
           <Text fontSize="4xl">
