@@ -19,7 +19,8 @@ const {
   getOneClass,
   addAnnouncement,
   deleteAnnouncement,
-  getAllAnnouncements
+  getAllAnnouncements,
+  getOneTest
 } = require("../controllers/teachers");
 
 router.post("/signup", signup);
@@ -39,5 +40,7 @@ router.get("/getOneClass/:classID",getOneClass)
 router.post("/addAnnouncement",addAnnouncement)
 router.post('/deleteAnnouncement',deleteAnnouncement)
 router.get("/getAllAnnouncements/:id",getAllAnnouncements)
+router.get('/getOneTest/:testId',getOneTest)
+
 
 module.exports = router;

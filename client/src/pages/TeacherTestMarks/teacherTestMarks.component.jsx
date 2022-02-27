@@ -11,7 +11,11 @@ import {
   Th,
   Button,
 } from "@chakra-ui/react";
-import React from "react";
+import React,{useEffect} from "react";
+
+import {useParams} from 'react-router-dom';
+
+import {getTest} from '../../hooks/useClass';
 
 const StudentMarks = () => {
   return (
@@ -40,6 +44,11 @@ const StudentMarks = () => {
 };
 
 const TeacherTestMarks = () => {
+  const {testId,id} = useParams();
+  useEffect(()=>{
+    console.log(id,testId);
+    getTest(testId);
+  },[testId,id]);
   return (
     <Box padding="10px 20px 100px 20px">
       <Text

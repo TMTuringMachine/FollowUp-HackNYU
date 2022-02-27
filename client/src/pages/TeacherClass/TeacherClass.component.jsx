@@ -1,4 +1,14 @@
-import { Box, Text, Button, Input } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Button,
+  Input,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+} from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
@@ -8,9 +18,10 @@ import AddTestModal from "./AddTestModal";
 import AddAnnouncementModal from "./AddAnnouncementModal";
 
 import { getClass } from "../../hooks/useClass";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import Fade from "react-reveal/Fade";
 
-const StudentOverview = () => (
+const StudentOverview = ({ student }) => (
   <Box
     display="flex"
     flexDirection="row"
@@ -26,7 +37,7 @@ const StudentOverview = () => (
     </Box>
     <Box width="50%">
       <Text fontWeight={400} fontSize="lg">
-        Aniwekfnwek Bajkfnwkena Ciwafnwk
+        {student?.name}
       </Text>
     </Box>
     <Box width="20%">
@@ -36,11 +47,58 @@ const StudentOverview = () => (
     </Box>
     <Box width="20%">
       <Text fontWeight={400} fontSize="lg">
-        9876543211
+        {student?.phone}
       </Text>
     </Box>
   </Box>
 );
+
+const TestOverview = ({ test,classId }) => {
+  const [subjects, setSubjects] = useState([]);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (test) {
+      const ns = test.subjects.map((s) => s.name);
+      setSubjects([...ns]);
+      console.log(ns, test.subjects);
+    }
+  }, [test]);
+  return (
+    <Fade left>
+      <Box
+        boxShadow="0px 8px 20px rgba(35, 35, 35, 0.1)"
+        borderRadius="5px"
+        overflow="hidden"
+        width="50%"
+        padding="20px"
+      >
+        <Text fontSize="3xl" fontWeight={600}>
+          {test?.name}
+        </Text>
+        <Text fontSize="lg" color="#858585">
+          Date: {test?.date}
+        </Text>
+        <Text fontSize="lg" color="#858585">
+          Time: {test?.time}
+        </Text>
+        <Text fontSize="lg" color="#444444">
+          Subjects: {subjects.join(", ")}
+        </Text>
+        <Button
+          backgroundColor="#4CC9F0"
+          color="#fff"
+          _hover={{}}
+          borderRadius="5px"
+          marginTop="20px"
+          onClick={()=>{navigate(`/teacher/class/${classId}/test/${test._id}`)}}
+        >
+          VIEW MARKS ALLOCATION
+        </Button>
+      </Box>
+    </Fade>
+  );
+};
 
 const TeacherClass = () => {
   const navigate = useNavigate();
@@ -49,6 +107,7 @@ const TeacherClass = () => {
   const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
   const [classData, setClassData] = useState(null);
   const location = useLocation();
+  const params = useParams();
   const toggleSubjectModal = () => {
     setShowSubjectModal(!showSubjectModal);
   };
@@ -60,20 +119,22 @@ const TeacherClass = () => {
   };
 
   useEffect(() => {
-    const classId = location.pathname.slice(15);
+    const classId = params.id;
+
     getClass(classId).then((res) => {
       setClassData(res);
     });
   }, []);
 
   return (
-    <Box padding="50px 20px 100px 20px">
+    <Box padding="20px 20px 100px 20px">
       <Box
         height="280px"
         width="100%"
         boxShadow="0px 8px 20px rgba(35, 35, 35, 0.1)"
         borderRadius={5}
         overflow="hidden"
+        margin="10px 0"
       >
         <Text
           fontWeight="800"
@@ -150,10 +211,7 @@ const TeacherClass = () => {
             borderRadius="5px"
             marginRight="20px"
             rightIcon={
-              <Icon
-                icon="healthicons:i-exam-multiple-choice"
-                fontSize="1.2em"
-              />
+              <Icon icon="ant-design:notification-filled" fontSize="1.2em" />
             }
             onClick={toggleAnnouncementModal}
           >
@@ -162,62 +220,74 @@ const TeacherClass = () => {
           <AddAnnouncementModal
             state={showAnnouncementModal}
             toggleModal={toggleAnnouncementModal}
+            classId={classData?._id}
           />
         </Box>
       </Box>
-      <Input
-        display="inline"
-        width="20%"
-        variant="outline"
-        placeholder="Search Students"
-        backgroundColor="#fff"
-        border="2px solid #888888"
-        _focus=""
-        margin="20px 0px"
-        // value={searchText}
-        // onChange={(e) => {
-        //   setSearchText(e.target.value);
-        // }}
-      />
-      <Box
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-between"
-        padding="5px 10px"
-        backgroundColor="#EFEFEF"
-        width="100%"
-      >
-        <Box width="10%">
-          <Text fontWeight={600} fontSize="lg">
-            Roll No
-          </Text>
-        </Box>
-        <Box width="50%">
-          <Text fontWeight={600} fontSize="lg">
-            Name
-          </Text>
-        </Box>
-        <Box width="20%">
-          <Text fontWeight={600} fontSize="lg">
-            Attendance
-          </Text>
-        </Box>
-        <Box width="20%">
-          <Text fontWeight={600} fontSize="lg">
-            Phone No
-          </Text>
-        </Box>
-      </Box>
-      <Box marginBottom="50px">
-        <StudentOverview />
-        <StudentOverview />
-        <StudentOverview />
-        <StudentOverview />
-        <StudentOverview />
-        <StudentOverview />
-        <StudentOverview />
-        <StudentOverview />
-      </Box>
+      <Tabs marginTop="30px">
+        <TabList>
+          <Tab _focus={{ outline: "none" }}>STUDENTS</Tab>
+          <Tab _focus={{ outline: "none" }}>TESTS</Tab>
+        </TabList>
+
+        <TabPanels>
+          <TabPanel>
+            <Input
+              display="inline"
+              width="20%"
+              variant="outline"
+              placeholder="Search Students"
+              backgroundColor="#fff"
+              border="2px solid #888888"
+              _focus=""
+              margin="20px 0px"
+              // value={searchText}
+              // onChange={(e) => {
+              //   setSearchText(e.target.value);
+              // }}
+            />
+            <Box
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+              padding="5px 10px"
+              backgroundColor="#EFEFEF"
+              width="100%"
+            >
+              <Box width="10%">
+                <Text fontWeight={600} fontSize="lg">
+                  Roll No
+                </Text>
+              </Box>
+              <Box width="50%">
+                <Text fontWeight={600} fontSize="lg">
+                  Name
+                </Text>
+              </Box>
+              <Box width="20%">
+                <Text fontWeight={600} fontSize="lg">
+                  Attendance
+                </Text>
+              </Box>
+              <Box width="20%">
+                <Text fontWeight={600} fontSize="lg">
+                  Phone No
+                </Text>
+              </Box>
+            </Box>
+            <Box marginBottom="50px">
+              {classData?.students.map((student) => (
+                <StudentOverview student={student} />
+              ))}
+            </Box>
+          </TabPanel>
+          <TabPanel>
+            {classData?.tests.map((t) => (
+              <TestOverview test={t} classId={classData?._id} />
+            ))}
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Box>
   );
 };

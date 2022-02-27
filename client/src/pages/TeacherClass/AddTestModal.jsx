@@ -14,6 +14,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "react-time-picker";
 import styled from "styled-components";
 
+import {addTest} from '../../hooks/useClass';
+
 export const CustomTimePicker = styled(TimePicker)({
   "& .react-time-picker__wrapper": {
     border: "none",
@@ -51,6 +53,7 @@ const AddTestModal = ({ state, toggleModal, subjects, classId }) => {
       classID:classId
     }
     console.log(data);
+    addTest(data);
   };
 
   const handleCheck = (id,isChecked) => {
