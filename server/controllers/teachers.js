@@ -99,16 +99,18 @@ const createClass = async (req, res) => {
   try {
     if (!name || !teacher)
       res.status(200).json({ ok: false, message: "Enter All Details" });
-    const teacherExists = Teacher.findById(teacher);
+    const teacherExists = await Teacher.findById(teacher);
     if (teacherExists) {
       const classExists = await Class.findOne({ name });
       if (!classExists) {
         const newClass = new Class({ name, teacher });
         const saveClass = await newClass.save();
-        if (saveClass)
-          res
-            .status(200)
-            .send({ ok: true, message: "Class Created Successfully!" });
+        if (saveClass){
+          teacherExists.classes.push(saveClass._id)
+          const updatedTeacher = await Teacher.findByIdAndUpdate(teacher,{classes:teacherExists.classes})
+          if(updatedTeacher) 
+          res.status(200).send({ ok: true, message: "Class Created Successfully!" });
+        }
         else
           res
             .status(200)
@@ -231,7 +233,125 @@ const markAttendance = async(req,res) =>{
     }
 }
 
+const deleteClass = async(req,res)=>{
+  const {classID, teacherID} = req.body;
+  try {
+    const getClass = await Class.findById(classID)
+    if(getClass){
+      if(getClass.teacher==teacherID){
+        const deleteClass = await Class.findByIdAndDelete(classID)
+        if(deleteClass) res.send({ok:true,message:"Class Deleted"})
+      }else{
+        res.send({ok:false,message:"This Class Doesnt Belong To You"})
+      }
+    }else{
+      res.send({ok:false,message:"Class doesnt Exist"})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
 
+const removeStudent = async(req,res)=>{
+  const {classID,studentID,teacherID} = req.body;
+  try {
+    const getClass = await Class.findById(classID);
+    if(getClass){
+      if(getClass.teacher==teacherID){
+        const index = getClass.students.indexOf(studentID);
+        getClass.students.splice(index, 1);
+        const updated = await Class.findByIdAndUpdate(classID,{students:getClass.students})
+        if(updated){
+          const delTeacherFromStudent = await Student.findByIdAndUpdate(studentID,{class:null})
+          if(delTeacherFromStudent) res.send({ok:true,message:"Student Removed From Class"})
+        }else{
+          res.send({ok:false,message:"Failed"})
+        }
+      }else{
+        res.send({ok:false,message:"This Class Doesnt Belong To You"})
+      }
+    }else{
+      res.send({ok:false,message:"Class doesnt Exist"})
+    }
+  } 
+  catch (error) {
+    
+  }
+}
+
+const getAllClasses = async(req,res)=>{
+  const {id} = req.params;
+  console.log(id)
+  try {
+    const getClasses = await Teacher.findById(id).populate('classes')
+    if(getClasses){
+      res.send({ok:true,message:"successful",getClasses})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const getOneClass = async(req,res)=>{
+  const {classID} = req.params;
+  try {
+    const getClass = await Class.findById(classID).populate('students').populate('subjects')
+    if(getClass){
+      res.send({ok:true,message:"Got One Class",getClass})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const addAnnouncement = async(req,res)=>{
+  const {title,description,classID} = req.body;
+  try {
+    const existing = await Class.findById(classID);
+    if(existing){
+      existing.announcement.push({
+        title,description
+      })
+      const add = await Class.findByIdAndUpdate(classID,{announcement:existing.announcement})
+      if(add) res.send({ok:true,message:"Announcement Added"})
+      else{
+        res.send({ok:false,message:"Announcement Failed"})
+      }
+    }else{
+      res.send({ok:false,message:"Class Doesnt Exist"})
+    }
+  } catch (error) {
+  }
+}
+
+const deleteAnnouncement = async(req,res)=>{
+  const {id,classID} = req.body;
+  try {
+    const deleteAnnouncement = await Class.findById(classID)
+    if(deleteAnnouncement){
+      for(var i = 0;i<deleteAnnouncement.announcement.length;i++){
+        if(deleteAnnouncement.announcement[i]._id==id) deleteAnnouncement.announcement.splice(i, 1);
+      }
+      const updated = await Class.findByIdAndUpdate(classID,{announcement:deleteAnnouncement.announcement})
+    if(updated) res.json({ok:true,message:"Announcement Deleted"})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const getAllAnnouncements = async(req,res)=>{
+  const {id} = req.params;
+  try {
+    const all = await Class.findById(id);
+    if(all){
+      const annuncements = all.announcement;
+      res.send({ok:true,message:"All Announcements",annuncements})
+    }
+  } catch (error) {
+    
+  }
+}
 
 module.exports = {
   signup,
@@ -243,5 +363,12 @@ module.exports = {
   getAllStudents,
   getAllStudentsInClass,
   setMarksOfStudent,
-  markAttendance
+  markAttendance,
+  deleteClass,
+  removeStudent,
+  getAllClasses,
+  getOneClass,
+  addAnnouncement,
+  deleteAnnouncement,
+  getAllAnnouncements
 };

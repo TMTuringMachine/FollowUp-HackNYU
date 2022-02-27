@@ -92,10 +92,17 @@ const joinClassByID = async (req, res) => {
       const updateStudent = await Student.findByIdAndUpdate(getStudent._id, {
         class: classID,
       });
-      if (updateStudent)
+      if (updateStudent){
+        const getClass = await Class.findById(classID)
+        if(getClass){
+          getClass.students.push(studentID)
+          const addedStudent = await Class.findByIdAndUpdate(classID,{students:getClass.students})
+        }
         res
-          .status(200)
-          .json({ ok: true, message: "Class Joined", updateStudent });
+        .status(200)
+        .json({ ok: true, message: "Class Joined", updateStudent });
+      }
+        
     } else {
       res.status(200).json({ ok: false, message: "Student Doesnt Exist" });
     }
@@ -139,6 +146,19 @@ const feedback = async (req, res) => {
   }
 };
 
+const getAttendance = async(req,res)=>{
+  const {id} = req.params;
+  try {
+    const student = await Student.findById(id);
+    if(student){
+      const attendance = student.attendance
+      res.send({ok:true,attendance})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   signup,
   login,
@@ -146,4 +166,5 @@ module.exports = {
   joinClassByID,
   getStudentTests,
   feedback,
+  getAttendance
 };

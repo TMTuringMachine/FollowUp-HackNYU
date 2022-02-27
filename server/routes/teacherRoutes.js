@@ -12,7 +12,14 @@ const {
   getAllStudents,
   getAllStudentsInClass,
   setMarksOfStudent,
-  markAttendance
+  markAttendance,
+  deleteClass,
+  removeStudent,
+  getAllClasses,
+  getOneClass,
+  addAnnouncement,
+  deleteAnnouncement,
+  getAllAnnouncements
 } = require("../controllers/teachers");
 
 router.post("/signup", signup);
@@ -25,5 +32,12 @@ router.get("/getAllStudents/:classID", getAllStudentsInClass);
 router.get("/getAllStudents", getAllStudents);
 router.post("/setMarks",setMarksOfStudent)
 router.post("/markAttendance",markAttendance)
+router.post("/deleteClass",deleteClass)
+router.post("/removeStudent",removeStudent)
+router.get("/getAllClasses/:id",getAllClasses)
+router.get("/getOneClass/:classID",getOneClass)
+router.post("/addAnnouncement",addAnnouncement)
+router.post('/deleteAnnouncement',deleteAnnouncement)
+router.get("/getAllAnnouncements/:id",getAllAnnouncements)
 
 module.exports = router;
