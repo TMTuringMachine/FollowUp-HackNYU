@@ -16,6 +16,7 @@
     "cors": "^2.8.5",
     "nodemon": "^2.0.15",
     "react-time-picker": "^4.5.0",
-    "recharts": "^2.1.9"
+    "recharts": "^2.1.9",
+    "typewriter-effect": "^2.18.2"
   }
 }
