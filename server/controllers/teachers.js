@@ -304,7 +304,54 @@ const getOneClass = async(req,res)=>{
   }
 }
 
+const addAnnouncement = async(req,res)=>{
+  const {title,description,classID} = req.body;
+  try {
+    const existing = await Class.findById(classID);
+    if(existing){
+      existing.announcement.push({
+        title,description
+      })
+      const add = await Class.findByIdAndUpdate(classID,{announcement:existing.announcement})
+      if(add) res.send({ok:true,message:"Announcement Added"})
+      else{
+        res.send({ok:false,message:"Announcement Failed"})
+      }
+    }else{
+      res.send({ok:false,message:"Class Doesnt Exist"})
+    }
+  } catch (error) {
+  }
+}
 
+const deleteAnnouncement = async(req,res)=>{
+  const {id,classID} = req.body;
+  try {
+    const deleteAnnouncement = await Class.findById(classID)
+    if(deleteAnnouncement){
+      for(var i = 0;i<deleteAnnouncement.announcement.length;i++){
+        if(deleteAnnouncement.announcement[i]._id==id) deleteAnnouncement.announcement.splice(i, 1);
+      }
+      const updated = await Class.findByIdAndUpdate(classID,{announcement:deleteAnnouncement.announcement})
+    if(updated) res.json({ok:true,message:"Announcement Deleted"})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const getAllAnnouncements = async(req,res)=>{
+  const {id} = req.params;
+  try {
+    const all = await Class.findById(id);
+    if(all){
+      const annuncements = all.announcement;
+      res.send({ok:true,message:"All Announcements",annuncements})
+    }
+  } catch (error) {
+    
+  }
+}
 
 module.exports = {
   signup,
@@ -320,5 +367,8 @@ module.exports = {
   deleteClass,
   removeStudent,
   getAllClasses,
-  getOneClass
+  getOneClass,
+  addAnnouncement,
+  deleteAnnouncement,
+  getAllAnnouncements
 };
