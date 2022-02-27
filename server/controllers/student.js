@@ -146,6 +146,19 @@ const feedback = async (req, res) => {
   }
 };
 
+const getAttendance = async(req,res)=>{
+  const {id} = req.params;
+  try {
+    const student = await Student.findById(id);
+    if(student){
+      const attendance = student.attendance
+      res.send({ok:true,attendance})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   signup,
   login,
@@ -153,4 +166,5 @@ module.exports = {
   joinClassByID,
   getStudentTests,
   feedback,
+  getAttendance
 };
