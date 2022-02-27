@@ -16,6 +16,6 @@ router.get("/jwtVerify", jwtVerify);
 router.post("/joinClass", joinClassByID);
 router.get("/getAllTests/:studentID", getStudentTests);
 router.post("/feedback", feedback);
-router.get('/getAttendance/:id',getAttendance)
+router.get("/getAttendance/:id", getAttendance);
 
 module.exports = router;

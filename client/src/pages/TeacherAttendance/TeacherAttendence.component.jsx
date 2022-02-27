@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Text,
@@ -13,24 +13,66 @@ import {
   Checkbox,
   Button,
 } from "@chakra-ui/react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
+import { getClass } from "../../hooks/useClass";
+import { markAttendance } from "../../hooks/useClass";
 
+const DatePickerContainer = styled("div")(() => ({
+  margin: "20px 0 0 20px",
+  fontSize: "1.5em",
 
-const DatePickerContainer = styled("div")(()=>({
-    margin:"20px 0 0 20px",
-    fontSize:'1.5em',
-
-    '& .react-datepicker-wrapper':{
-        display:'inline',
-    },
-}))
+  "& .react-datepicker-wrapper": {
+    display: "inline",
+  },
+}));
 
 const TeacherAttendance = () => {
+  const location = useLocation();
+  const [student, setStudents] = useState([]);
+  const [attendanceData, setAttendanceData] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    const classId = location.pathname.slice(15, 39);
+    console.log(classId);
+    getClass(classId).then((res) => {
+      setStudents(res.students);
+      console.log(res.students);
+      res.students.forEach((st) => {
+        setAttendanceData((attendanceData) => [
+          ...attendanceData,
+          {
+            studentID: st._id,
+            date: startDate,
+            isPresent: true,
+          },
+        ]);
+      });
+    });
+  }, []);
+  const onChangeHandler = (e, student_id) => {
+    const newAtten = attendanceData.map((atte) => {
+      console.log(atte);
+      if (atte.studentID === student_id) {
+        console.log("here i am");
+        atte.isPresent = !e.target.checked;
+      }
+      return atte;
+    });
+    setAttendanceData(newAtten);
+    console.log(attendanceData);
+  };
+
+  const onSubmitHandler = () => {
+    markAttendance(attendanceData, navigate);
+  };
+
   return (
     <Box padding="10px 20px 100px 20px">
       <Text
@@ -41,7 +83,7 @@ const TeacherAttendance = () => {
       >
         CLASS B - ATTENDANCE
       </Text>
-      <DatePickerContainer >
+      <DatePickerContainer>
         <Text>Date:</Text>
         <DatePicker
           selected={startDate}
@@ -66,17 +108,31 @@ const TeacherAttendance = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {[...Array(20)].map((i, idx) => (
-              <Tr>
-                <Td>{idx + 1}</Td>
-                <Td>Aweknfkwe Bwekjfnwke Cweifknw</Td>
-                <Td>
-                  <Checkbox colorScheme="red" />
-                </Td>
-              </Tr>
-            ))}
+            {student.map((stude, idx) => {
+              return (
+                <Tr>
+                  <Td>{idx + 1}</Td>
+                  <Td>{stude.name}</Td>
+                  <Td>
+                    <Checkbox
+                      onChange={(e) => onChangeHandler(e, stude._id)}
+                      colorScheme="red"
+                    />
+                  </Td>
+                </Tr>
+              );
+            })}
           </Tbody>
         </Table>
+        <Button
+          onClick={onSubmitHandler}
+          color="white"
+          backgroundColor="#4cc9f0"
+          ml="1rem"
+          mt="2rem"
+        >
+          Submit Attendance
+        </Button>
       </Box>
     </Box>
   );

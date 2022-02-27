@@ -58,7 +58,7 @@ const login = async (req, res) => {
           },
           process.env.JWT_PRIVATE_KEY,
           {
-            expiresIn: "300m",
+            expiresIn: "1400000000m",
           }
         );
         return res.status(200).json({
@@ -227,22 +227,36 @@ const setMarksOfStudent = async (req, res) => {
 };
 
 const markAttendance = async (req, res) => {
-  const { studentID, date, isPresent } = req.body;
+  const data = req.body;
+  console.log(data);
   try {
-    const currentStudent = await Student.findById(studentID);
-    if (currentStudent) {
-      currentStudent.attendance.push({
-        date,
-        isPresent,
+    data.forEach(async (d) => {
+      const currStudent = await Student.findById(d.studentID);
+      currStudent.attendance.push({
+        date: d.date,
+        isPresent: d.isPresent,
       });
+      await currStudent.save();
+      return res.send({ ok: true, message: "Attendance Marked" });
+    });
+  } catch (e) {
+    return res.send({ ok: false, message: "Error Occured" });
+  }
+  // try {
+  //   const currentStudent = await Student.findById(studentID);
+  //   if (currentStudent) {
+  //     currentStudent.attendance.push({
+  //       date,
+  //       isPresent,
+  //     });
 
-      const mark = await Student.findByIdAndUpdate(studentID, {
-        attendance: currentStudent.attendance,
-      });
-      if (mark)
-        res.status(200).send({ ok: true, message: "Attendance Marked" });
-    }
-  } catch (error) {}
+  //     const mark = await Student.findByIdAndUpdate(studentID, {
+  //       attendance: currentStudent.attendance,
+  //     });
+  //     if (mark)
+  //       res.status(200).send({ ok: true, message: "Attendance Marked" });
+  //   }
+  // } catch (error) {}
 };
 
 const deleteClass = async (req, res) => {
@@ -380,7 +394,8 @@ const getOneTest = async (req, res) => {
   try {
     const test = await Test.findById(testId)
       .populate("subjects")
-      .populate("classID").populate({path:"classID",populate:"students"})
+      .populate("classID")
+      .populate({ path: "classID", populate: "students" });
     if (test) {
       res.send({ ok: true, message: "Test data", test });
     }
