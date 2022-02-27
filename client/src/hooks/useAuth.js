@@ -125,5 +125,6 @@ export const logout = (dispatch) => {
   } else {
     localStorage.removeItem("teacherToken");
   }
+  window.location.reload()
   dispatch(logoutSuccess());
 };

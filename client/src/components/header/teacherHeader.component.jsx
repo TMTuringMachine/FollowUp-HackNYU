@@ -129,6 +129,7 @@ const TeacherHeader = () => {
 
   const handleLogout = () => {
     logout(dispatch);
+    
   };
 
   // React.useEffect(() => {
