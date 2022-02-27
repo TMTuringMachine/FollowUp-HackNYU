@@ -6,7 +6,7 @@ Handling attendance, awarding exam marks, and giving feedback for a whole class 
 
 ## 💻 What it does
 
-APPNAME is a tool to help you manage your class if you are a teacher or check your child's performance if you are a parent. Teachers can easily maintain the record of their students, from marking their attendance to awarding marks. Parents can easily check their children's performance in the form of graphs and give teachers feedback. Getting the right feedback from the parents for teachers is the key to success in becoming a good teacher. And getting the performance graph of your child can improve your child's performance and motivate them to do their best.
+followUp is a tool to help you manage your class if you are a teacher or check your child's performance if you are a parent. Teachers can easily maintain the record of their students, from marking their attendance to awarding marks. Parents can easily check their children's performance in the form of graphs and give teachers feedback. Getting the right feedback from the parents for teachers is the key to success in becoming a good teacher. And getting the performance graph of your child can improve your child's performance and motivate them to do their best.
 
 ## ⚙️ How we built it
 
