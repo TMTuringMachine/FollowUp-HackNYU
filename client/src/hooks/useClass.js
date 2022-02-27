@@ -87,4 +87,17 @@ export const addTest = async (data) => {
   }
 };
 
+const markAttendance = async (formData) => {
+  try {
+    const body = JSON.stringify(formData);
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    const res = await axios.post("teacher/markAttendance", body, config);
+    console.log(res);
+  } catch (e) {}
+};
+
 export default giveFeedback;
