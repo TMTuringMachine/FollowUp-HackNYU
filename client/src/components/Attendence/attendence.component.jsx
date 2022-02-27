@@ -17,6 +17,7 @@ import { getAttendance } from "../../hooks/useClass";
 import { useSelector } from "react-redux";
 import shadows from "../../theme/shadows";
 
+import { useSnackbar } from "notistack";
 import moment from "moment";
 
 export default function Attendence() {
@@ -26,8 +27,12 @@ export default function Attendence() {
   let [total, setTotal] = useState(0);
   let [present, setPresent] = useState(0);
   const user = useSelector((store) => store.auth.user);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   useEffect(() => {
     getAttendance(user._id).then((res) => {
+      enqueueSnackbar("Attendance recieved", {
+        variant: "success",
+      });
       setAttendance(res);
     });
   }, []);

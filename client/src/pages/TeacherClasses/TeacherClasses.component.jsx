@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Text, Box, SimpleGrid, Input, Button } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import ClassOverview from "../../components/ClassOverview/classOverview.component";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { getAllClasses, createClass } from "../../hooks/useClass";
 import { useSelector } from "react-redux";
 import { Modal } from "@mui/material";
 
+import { useSnackbar } from "notistack";
 const ClassModal = ({ state, toggleModal, teacherId }) => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [createClassName, setCreateClassName] = useState("");
   const navigate = useNavigate();
 
@@ -23,7 +25,7 @@ const ClassModal = ({ state, toggleModal, teacherId }) => {
 
     // console.log(data);
 
-    createClass(data,navigate);
+    createClass(data, navigate, enqueueSnackbar);
   };
 
   return (
