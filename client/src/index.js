@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { transitions, positions, Provider as AlertProvider } from "react-alert";
-// import AlertTemplate from "react-alert-template-mui";
+import { SnackbarProvider } from "notistack";
 
 const options = {
   // you can also just use 'bottom center'
@@ -21,11 +21,11 @@ const options = {
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate persistor={persistor} loading={<div>loading ...</div>}>
-      {/* <AlertProvider template={AlertTemplate} {...options}> */}
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-      {/* </AlertProvider> */}
+      <SnackbarProvider maxSnack={3}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </SnackbarProvider>
     </PersistGate>
   </Provider>,
   document.getElementById("root")
