@@ -30,9 +30,38 @@ export const CustomTimePicker = styled(TimePicker)({
   },
 });
 
-const AddTestModal = ({ state, toggleModal }) => {
+const AddTestModal = ({ state, toggleModal, subjects, classId }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [value, onChange] = useState("10:00");
+  const [testData, setTestData] = useState({
+    name: "",
+    subjects: [],
+    date: new Date(),
+    time: "8:00",
+  });
+
+  const handleInput = (e) => {
+    setTestData({ ...testData, [e.target.name]: e.target.value });
+  };
+
+  const handleTestAdd = () => {
+    const data = {
+      ...testData,
+      date:testData.date.toLocaleDateString(),
+      classID:classId
+    }
+    console.log(data);
+  };
+
+  const handleCheck = (id,isChecked) => {
+    if(isChecked){
+      setTestData({...testData,subjects:[...testData.subjects,id]})
+    }else{
+      const newSubjects = testData.subjects.filter(s => s !== id);
+      setTestData({...testData,subjects:[...newSubjects]})
+
+    }
+  }
 
   return (
     <Modal open={state} onClose={toggleModal}>
@@ -65,31 +94,41 @@ const AddTestModal = ({ state, toggleModal }) => {
             borderColor="#888888"
             width="100%"
             marginBottom="15px"
+            name="name"
+            value={testData.name}
+            onChange={handleInput}
           />
           <Text fontWeight={600} fontSize="lg">
             Select Subjects:
           </Text>
 
           <SimpleGrid columns={2} width="100%" marginBottom="15px">
-            <Checkbox>Subject Name</Checkbox>
-            <Checkbox>Subject Name</Checkbox>
-            <Checkbox>Subject Name</Checkbox>
-            <Checkbox>Subject Name</Checkbox>
+            {subjects.map((sub) => (
+              <Checkbox onChange={e => handleCheck(sub._id,e.target.checked)}>{sub?.name}</Checkbox>
+            ))}
           </SimpleGrid>
           <Box marginBottom="15px">
             <Text fontWeight={600} fontSize="lg">
               Date:
             </Text>
             <DatePicker
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
+              selected={testData.date}
+              name="date"
+              onChange={(date) => {
+                setTestData({ ...testData, date: date });
+              }}
             />
           </Box>
           <Box marginBottom="15px">
             <Text fontWeight={600} fontSize="lg">
               Time:
             </Text>
-            <CustomTimePicker onChange={onChange} value={value} />
+            <CustomTimePicker
+              onChange={(time) => {
+                setTestData({ ...testData, time: time });
+              }}
+              value={testData.time}
+            />
           </Box>
         </Box>
 
@@ -99,6 +138,7 @@ const AddTestModal = ({ state, toggleModal }) => {
           _hover={{}}
           borderRadius="5px"
           margin="20px 0"
+          onClick={handleTestAdd}
         >
           ADD
         </Button>

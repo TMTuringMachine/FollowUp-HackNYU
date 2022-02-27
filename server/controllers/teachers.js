@@ -109,7 +109,7 @@ const createClass = async (req, res) => {
           teacherExists.classes.push(saveClass._id)
           const updatedTeacher = await Teacher.findByIdAndUpdate(teacher,{classes:teacherExists.classes})
           if(updatedTeacher) 
-          res.status(200).send({ ok: true, message: "Class Created Successfully!" });
+          res.status(200).send({ ok: true, message: "Class Created Successfully!",saveClass });
         }
         else
           res
@@ -134,8 +134,13 @@ const addSubject = async (req, res) => {
     if (!subjectExists) {
       const newSubject = new Subject({ name, totalMarks, classID });
       const saveSubject = await newSubject.save();
+      const classRef = await Class.findById(classID);
+      classRef.subjects.push(saveSubject);
+
+      await classRef.save();
+
       if (saveSubject)
-        res.status(200).send({ ok: true, message: "New Subject Added!" });
+        res.status(200).send({ ok: true, message: "New Subject Added!",saveSubject });
     } else {
       res.status(200).send({ ok: false, message: "Subject Already Exists!" });
     }
@@ -152,6 +157,11 @@ const addTest = async (req, res) => {
     if (!testExists) {
       const newTest = new Test({ name, subjects, classID, date, time });
       const saveTest = await newTest.save();
+
+      const classRef = await Class.findById(classID);
+      classRef.tests.push(saveTest);
+
+      await classRef.save();
 
       if (saveTest) res.status(200).send({ ok: true, message: "Test Added!" });
     } else {

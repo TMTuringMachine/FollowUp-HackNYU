@@ -1,11 +1,14 @@
 import { Box, Text, Button, Input } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
 
 import AddSubjectModal from "./AddSubjectModal";
 import AddTestModal from "./AddTestModal";
 import AddAnnouncementModal from "./AddAnnouncementModal";
+
+import { getClass } from "../../hooks/useClass";
+import { useLocation } from "react-router-dom";
 
 const StudentOverview = () => (
   <Box
@@ -42,18 +45,26 @@ const StudentOverview = () => (
 const TeacherClass = () => {
   const navigate = useNavigate();
   const [showSubjectModal, setShowSubjectModal] = useState(false);
-  const [showTestModal,setShowTestModal] = useState(false);
-  const [showAnnouncementModal,setShowAnnouncementModal] = useState(false);
-
+  const [showTestModal, setShowTestModal] = useState(false);
+  const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
+  const [classData, setClassData] = useState(null);
+  const location = useLocation();
   const toggleSubjectModal = () => {
     setShowSubjectModal(!showSubjectModal);
-  }
-  const toggleTestModal = () =>{
-    setShowTestModal(!showTestModal)
-  }
+  };
+  const toggleTestModal = () => {
+    setShowTestModal(!showTestModal);
+  };
   const toggleAnnouncementModal = () => {
-    setShowAnnouncementModal(!showAnnouncementModal)
-  }
+    setShowAnnouncementModal(!showAnnouncementModal);
+  };
+
+  useEffect(() => {
+    const classId = location.pathname.slice(15);
+    getClass(classId).then((res) => {
+      setClassData(res);
+    });
+  }, []);
 
   return (
     <Box padding="50px 20px 100px 20px">
@@ -70,13 +81,13 @@ const TeacherClass = () => {
           color="#4CC9F0"
           margin="20px 0 0 20px"
         >
-          CLASS B
+          {classData?.name}
         </Text>
         <Text color="#888888" margin="5px 0px 0px 20px" fontSize="2xl">
-          28 students
+          {classData?.students?.length} students
         </Text>
         <Text color="#888888" margin="0px 0px 0px 20px" fontSize="2xl">
-          6 subjects
+          {classData?.subjects?.length} subjects
         </Text>
         <Box margin="30px 0 0 20px">
           <Button
@@ -90,7 +101,11 @@ const TeacherClass = () => {
           >
             ADD SUBJECT
           </Button>
-          <AddSubjectModal state={showSubjectModal} toggleModal={toggleSubjectModal}/>
+          <AddSubjectModal
+            state={showSubjectModal}
+            toggleModal={toggleSubjectModal}
+            classId={classData?._id}
+          />
           <Button
             backgroundColor="#4CC9F0"
             color="#fff"
@@ -122,7 +137,12 @@ const TeacherClass = () => {
           >
             MARK TEST
           </Button>
-          <AddTestModal state={showTestModal} toggleModal={toggleTestModal}/>
+          <AddTestModal
+            state={showTestModal}
+            toggleModal={toggleTestModal}
+            subjects={classData?.subjects || []}
+            classId={classData?._id}
+          />
           <Button
             backgroundColor="#4CC9F0"
             color="#fff"
@@ -139,7 +159,10 @@ const TeacherClass = () => {
           >
             MAKE ANNOUNCEMENT
           </Button>
-          <AddAnnouncementModal state={showAnnouncementModal} toggleModal={toggleAnnouncementModal}/>
+          <AddAnnouncementModal
+            state={showAnnouncementModal}
+            toggleModal={toggleAnnouncementModal}
+          />
         </Box>
       </Box>
       <Input

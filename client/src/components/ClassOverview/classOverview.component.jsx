@@ -22,11 +22,11 @@ const ImageContainer = styled("div")(({ url }) => ({
   },
 }));
 
-const ClassOverview = () => {
+const ClassOverview = ({classData}) => {
     const navigate = useNavigate();
   return (
     <Fade bottom>
-      <ButtonBase sx={{width:'100%',height:'250px',textAlign:'start'}} onClick={()=>{navigate('/teacher/class/rekjnwkn')}}>
+      <ButtonBase sx={{width:'100%',height:'250px',textAlign:'start'}} onClick={()=>{navigate(`/teacher/class/${classData?._id}`)}}>
         <Box
           height="100%"
           width="100%"
@@ -43,13 +43,13 @@ const ClassOverview = () => {
           height="70%"
         /> */}
           <ImageContainer url="https://images.unsplash.com/photo-1536924940846-227afb31e2a5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1166&q=80">
-            <p>CLASS B</p>
+            <p> {classData?.name}</p>
           </ImageContainer>
           <Text color="#888888" margin="5px 0px 0px 10px" fontSize="xl">
-            28 students
+            {classData?.students?.length} students
           </Text>
           <Text color="#888888" margin="0px 0px 0px 10px" fontSize="xl">
-            6 subjects
+            {classData?.subjects?.length} subjects
           </Text>
 
           {/* <Icon icon="ion:navigate-circle" color="#4CC9F0" fontSize="2em"/> */}
