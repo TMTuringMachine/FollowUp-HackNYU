@@ -152,7 +152,7 @@ const StudentPerformance = Loadable(
 );
 
 const StudentDashboard = Loadable(
-  lazy(() => import("../pages/TeacherDashboard/TeacherDashboard"))
+  lazy(() => import("../pages/StudentDashboard/StudentDashboard"))
 );
 
 const TeacherSignup = Loadable(

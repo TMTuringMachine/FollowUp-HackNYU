@@ -38,14 +38,14 @@ const StudentDashboard = () => {
   return (
     <>
       <Flex m="1rem 4rem" flexDir="column" justifyContent="center">
-        {/* <Text
+        <Text
           fontWeight="800"
           fontSize={{ base: "1rem", md: "2.5rem" }}
           color="#3a0ca3"
           textAlign={"center"}
         >
           Student Dashboard
-        </Text> */}
+        </Text>
 
         <Text
           fontWeight="800"
