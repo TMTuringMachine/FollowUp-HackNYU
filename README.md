@@ -1,5 +1,6 @@
-# APPNAME
-
+# FollowUp
+### Figma Link for frontEnd Design [here](https://www.figma.com/file/pRJytUBaIwDjxaz8A6sng2/Frontend?node-id=0%3A1)
+### Figma Link for Schema [here](https://www.figma.com/file/Ksv0pvkwvCzivkDxI6vaYZ/HackNYU)
 ## 💡 Inspiration
 
 Handling attendance, awarding exam marks, and giving feedback for a whole class of numerous students is not an easy task. Similarly, sometimes it's easy to check and maintain the record of your children for the parents. FollowUp is a tool to help you manage your class if you are a teacher or check your child's performance if you are a parent.
