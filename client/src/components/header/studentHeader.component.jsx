@@ -45,7 +45,7 @@ const SidebarBtn = ({ url, children }) => {
       margin="12px 0"
       width="80%"
       onClick={handleClick}
-      backgroundColor={selected ? "#6C63FF" : "#fff"}
+      backgroundColor={selected ? "#4CC9F0" : "#fff"}
       color={selected ? "#fff" : "#000"}
       _hover=""
     >
@@ -143,7 +143,7 @@ const StudentHeader = () => {
         <Icon
           icon="ic:round-arrow-forward-ios"
           fontSize={"2em"}
-          color={"#6C63FF"}
+          color={"#4CC9F0"}
         />
       </IconButton>
       <Link to="/home">
@@ -190,10 +190,12 @@ const StudentHeader = () => {
             <Text>{user?.name ? user?.name : "no name"}</Text>
           </DrawerHeader>
           <DrawerBody display="flex" flexDirection="column" alignItems="center">
-            <SidebarBtn url="/home">TESTS</SidebarBtn>
-            <SidebarBtn url="/my-courses">PERFORMANCE</SidebarBtn>
-            <SidebarBtn url="/dashboard">ANNOUNCEMENTS</SidebarBtn>
-            <SidebarBtn url="/createCourse">FEEDBACK</SidebarBtn>
+            <SidebarBtn url="/student/recentTests">TESTS</SidebarBtn>
+            <SidebarBtn url="/student/performance">PERFORMANCE</SidebarBtn>
+            <SidebarBtn url="/student/announcement">ANNOUNCEMENTS</SidebarBtn>
+            <SidebarBtn url="/student/attendance">ATTENDANCE</SidebarBtn>
+
+            <SidebarBtn url="/student/feedback">FEEDBACK</SidebarBtn>
             <Button
               position="absolute"
               bottom="20px"

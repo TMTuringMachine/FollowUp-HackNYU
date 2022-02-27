@@ -45,7 +45,7 @@ const SidebarBtn = ({ url, children }) => {
       margin="12px 0"
       width="80%"
       onClick={handleClick}
-      backgroundColor={selected ? "#6C63FF" : "#fff"}
+      backgroundColor={selected ? "#4CC9F0" : "#fff"}
       color={selected ? "#fff" : "#000"}
       _hover=""
     >
@@ -143,7 +143,7 @@ const TeacherHeader = () => {
         <Icon
           icon="ic:round-arrow-forward-ios"
           fontSize={"2em"}
-          color={"#6C63FF"}
+          color={"#4CC9F0"}
         />
       </IconButton>
       <Link to="/home">
