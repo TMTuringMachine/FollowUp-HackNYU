@@ -1,8 +1,11 @@
-import React from 'react'
+import React from 'react';
+import {Box} from '@chakra-ui/react';
 
 const LandingPage = () => {
   return (
-    <div>LandingPage</div>
+    <Box width="100vw" height="100vh" overflowY="scroll" backgroundColor="#f5f5f5">
+      PAGE
+    </Box>
   )
 }
 

@@ -88,6 +88,10 @@ export default function Router() {
           path: "class/:id/attendance",
           element: <TeacherAttendance />,
         },
+        {
+          path: "teacherDashboard",
+          element: <TeacherDashboard />,
+        },
       ],
     },
     {
@@ -148,7 +152,7 @@ const StudentPerformance = Loadable(
 );
 
 const StudentDashboard = Loadable(
-  lazy(() => import("../pages/StudentDashboard/StudentDashboard"))
+  lazy(() => import("../pages/TeacherDashboard/TeacherDashboard"))
 );
 
 const TeacherSignup = Loadable(
@@ -164,6 +168,10 @@ const TeacherLogin = Loadable(
 
 const StudentLogin = Loadable(
   lazy(() => import("../pages/StudentAuth/StudentLogin"))
+);
+
+const TeacherDashboard = Loadable(
+  lazy(() => import("../pages/TeacherDashboard/TeacherDashboard"))
 );
 
 const Feedback = Loadable(

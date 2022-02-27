@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import {
   LineChart,
@@ -10,6 +10,10 @@ import {
   Legend,
   LabelList,
 } from "recharts";
+import { useSelector } from "react-redux";
+
+import { getAllTests } from "../hooks/useClass";
+
 const data = [
   {
     name: "Page A",
@@ -76,7 +80,7 @@ const CustomizedAxisTick = (props) => {
         dy={16}
         textAnchor="end"
         fill="#666"
-        transform="rotate(-35)"
+        transform="rotate(-25)"
       >
         {payload.value}
       </text>
@@ -85,6 +89,40 @@ const CustomizedAxisTick = (props) => {
 };
 
 const StudentPerformance = () => {
+  const [tests, setTests] = useState([]);
+  const [graphData, setGraphData] = useState(null);
+
+  const { user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    console.log(user);
+    if (user._id) {
+      getAllTests(user._id).then((res) => {
+        setTests(res);
+      });
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (tests.length) {
+      const nd = tests.map((t) => ({
+        name: t?.test?.name,
+        score: Math.floor(
+          (t?.subjects.reduce((acc, curr) => curr.marksObtained + acc, 0) /
+            t?.subjects.reduce(
+              (acc, curr) => acc + curr.subject.totalMarks,
+              0
+            )) *
+            100
+        ),
+      }));
+
+      setGraphData([...nd]);
+
+      console.log(nd);
+    }
+  }, [tests]);
+
   return (
     <Flex justifyContent="center" alignItems="center" flexDir="column">
       <Text
@@ -94,11 +132,11 @@ const StudentPerformance = () => {
       >
         Student Performance
       </Text>
-      <Flex justifyContent="center" alignItems="center" mt="2rem" w="100%">
+      <Flex justifyContent="center" alignItems="center" mt="2rem" w="100%" paddingBottom="30px">
         <LineChart
           width={1000}
           height={400}
-          data={data}
+          data={graphData}
           margin={{
             top: 20,
             right: 30,
@@ -107,14 +145,13 @@ const StudentPerformance = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" height={60} tick={<CustomizedAxisTick />} />
+          <XAxis dataKey="name" height={10} tick={<CustomizedAxisTick />} />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="pv" stroke="#8884d8">
+          <Line type="monotone" dataKey="score" stroke="#8884d8" strokeWidth={3}>
             <LabelList content={<CustomizedLabel />} />
           </Line>
-          <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
         </LineChart>
       </Flex>
     </Flex>

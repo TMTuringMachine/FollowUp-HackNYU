@@ -120,10 +120,11 @@ export const initializeUser = async (dispatch) => {
 };
 
 export const logout = (dispatch) => {
-  if (localStorage.getItem("userToken")) {
-    localStorage.removeItem("userToken");
+  if (localStorage.getItem("studentToken")) {
+    localStorage.removeItem("studentToken");
   } else {
-    localStorage.removeItem("adminToken");
+    localStorage.removeItem("teacherToken");
   }
+  window.location.reload()
   dispatch(logoutSuccess());
 };

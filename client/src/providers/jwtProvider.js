@@ -14,6 +14,7 @@ export default function JwtProvider({ children }) {
   useEffect(() => {
     initializeUser(dispatch);
   }, []);
+  
 
   useEffect(() => {
     var token = null;

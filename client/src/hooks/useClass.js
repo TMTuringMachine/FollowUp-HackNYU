@@ -98,7 +98,7 @@ export const addSubject = async (data, enqueueSnackbar) => {
   }
 };
 
-export const addTest = async (data, enqueueSnackbar) => {
+export const addTest = async (data,navigate, enqueueSnackbar) => {
   const body = JSON.stringify(data);
   const config = {
     headers: {
@@ -112,6 +112,7 @@ export const addTest = async (data, enqueueSnackbar) => {
     enqueueSnackbar("Test added successfully!", {
       variant: "success",
     });
+    navigate(`/teacher/class/${data.classID}/test/${res.data.saveTest._id}`)
   } catch (err) {
     enqueueSnackbar("Some error occurred!", {
       variant: "error",
@@ -122,12 +123,13 @@ export const addTest = async (data, enqueueSnackbar) => {
 
 export const getTest = async (testId) => {
   const res = await axios.get(`/teacher/getOneTest/${testId}`);
-  console.log(res, "class test response");
-  if (res.data.ok) {
-    console.log(res.data);
+  console.log(res,"class test response");
+  if(res.data.ok){
+    return res.data.test;
   }
   return null;
 };
+
 
 export const setStudentMarks = async (data) => {
   const body = JSON.stringify(data);
@@ -137,13 +139,22 @@ export const setStudentMarks = async (data) => {
     },
   };
 
-  try {
-    const res = await axios.post("/teacher/setMarks", body, config);
-    console.log(res, "student set marks response");
-  } catch (err) {
+  try{
+    const res = await axios.post('/teacher/setMarks',body,config);
+    console.log(res,"student set marks response");
+  }catch(err){
     console.log(err);
   }
 };
+
+export const getAllTests = async (studentId) => {
+  const res = await axios.get(`/student/getAllTests/${studentId}`);
+  console.log(res,"all test response");
+  if(res.data.ok){
+    console.log(res.data);
+    return res.data.allTests;
+  }
+}
 
 export const markAttendance = async (formData, navigate, enqueueSnackbar) => {
   try {

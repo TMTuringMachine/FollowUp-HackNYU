@@ -45,7 +45,7 @@ const SidebarBtn = ({ url, children }) => {
       margin="12px 0"
       width="80%"
       onClick={handleClick}
-      backgroundColor={selected ? "#6C63FF" : "#fff"}
+      backgroundColor={selected ? "#4CC9F0" : "#fff"}
       color={selected ? "#fff" : "#000"}
       _hover=""
     >
@@ -129,6 +129,7 @@ const TeacherHeader = () => {
 
   const handleLogout = () => {
     logout(dispatch);
+    
   };
 
   // React.useEffect(() => {
@@ -143,7 +144,7 @@ const TeacherHeader = () => {
         <Icon
           icon="ic:round-arrow-forward-ios"
           fontSize={"2em"}
-          color={"#6C63FF"}
+          color={"#4CC9F0"}
         />
       </IconButton>
       <Link to="/home">
@@ -191,7 +192,7 @@ const TeacherHeader = () => {
           </DrawerHeader>
           <DrawerBody display="flex" flexDirection="column" alignItems="center">
             <SidebarBtn url="/teacher/classes">ALL COURSES</SidebarBtn>
-            <SidebarBtn url="/my-courses">MY PROFILE</SidebarBtn>
+            <SidebarBtn url="/teacher/teacherDashboard">MY PROFILE</SidebarBtn>
             
             <Button
               position="absolute"

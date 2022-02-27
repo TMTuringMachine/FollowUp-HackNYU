@@ -13,8 +13,8 @@ import { useSnackbar } from "notistack";
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "react-time-picker";
 import styled from "styled-components";
-
-import { addTest } from "../../hooks/useClass";
+import {useNavigate} from 'react-router-dom';
+import {addTest} from '../../hooks/useClass';
 
 export const CustomTimePicker = styled(TimePicker)({
   "& .react-time-picker__wrapper": {
@@ -43,6 +43,8 @@ const AddTestModal = ({ state, toggleModal, subjects, classId }) => {
     time: "8:00",
   });
 
+  const navigate = useNavigate();
+
   const handleInput = (e) => {
     setTestData({ ...testData, [e.target.name]: e.target.value });
   };
@@ -54,15 +56,15 @@ const AddTestModal = ({ state, toggleModal, subjects, classId }) => {
       classID: classId,
     };
     console.log(data);
-    addTest(data, enqueueSnackbar);
+    addTest(data,navigate,enqueueSnackbar);
   };
 
-  const handleCheck = (id, isChecked) => {
-    if (isChecked) {
-      setTestData({ ...testData, subjects: [...testData.subjects, id] });
-    } else {
-      const newSubjects = testData.subjects.filter((s) => s !== id);
-      setTestData({ ...testData, subjects: [...newSubjects] });
+  const handleCheck = (id,isChecked) => {
+    if(isChecked){
+      setTestData({...testData,subjects:[...testData.subjects,id]})
+    }else{
+      const newSubjects = testData.subjects.filter(s => s !== id);
+      setTestData({...testData,subjects:[...newSubjects]})
     }
   };
 
