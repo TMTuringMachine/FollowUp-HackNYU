@@ -96,7 +96,7 @@ const TeacherClasses = () => {
       <Text
         fontWeight="800"
         fontSize={{ base: "1rem", md: "2.5rem" }}
-        color="#3a0ca3"
+        color="#4CC9F0"
         marginBottom="20px"
       >
         MY CLASSES
@@ -105,7 +105,7 @@ const TeacherClasses = () => {
         width="80px"
         height="80px"
         borderRadius="80px"
-        boxShadow="0px 8px 20px rgba(35, 35, 35, 0.1)"
+        boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
         position="fixed"
         backgroundColor="#fff"
         display="grid"
@@ -115,6 +115,7 @@ const TeacherClasses = () => {
         zIndex={99999}
         onClick={toggleClassModal}
         cursor="pointer"
+        border="5px solid #4CC9F0"
       >
         <Icon icon="carbon:add" fontSize="4em" color="#4CC9F0" />
       </Box>

@@ -23,6 +23,7 @@ const ImageContainer = styled("div")(({ url }) => ({
 }));
 
 const ClassOverview = ({classData}) => {
+
     const navigate = useNavigate();
   return (
     <Fade bottom>

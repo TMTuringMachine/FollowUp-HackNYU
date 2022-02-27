@@ -14,10 +14,12 @@ import {
 import React, { useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 import { getTest,setStudentMarks } from "../../hooks/useClass";
 
 const StudentMarks = ({ test,student }) => {
+  const {enqueueSnackbar} = useSnackbar();
   const [subjectsData, setSubjectsData] = useState([]);
 
   const addSubjectMarks = (sub_id, marks) => {
@@ -43,7 +45,7 @@ const StudentMarks = ({ test,student }) => {
       testID:test._id,
       subjects:[...subjectsData]
     }
-    setStudentMarks(data);
+    setStudentMarks(data,enqueueSnackbar);
     console.log(data);
   };
 

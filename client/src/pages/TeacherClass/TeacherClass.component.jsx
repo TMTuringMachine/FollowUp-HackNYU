@@ -21,10 +21,10 @@ import AddAnnouncementModal from "./AddAnnouncementModal";
 import { getClass } from "../../hooks/useClass";
 import { useLocation, useParams } from "react-router-dom";
 import Fade from "react-reveal/Fade";
-import DeleteModal from "../../components/deleteModal.componment"
+import DeleteModal from "../../components/deleteModal.componment";
+import { Rating } from "@mui/material";
 
-
-const StudentOverview = ({ student, classId,teacherID}) => (
+const StudentOverview = ({ student, classId, teacherID }) => (
   <Box
     display="flex"
     flexDirection="row"
@@ -45,7 +45,7 @@ const StudentOverview = ({ student, classId,teacherID}) => (
     </Box>
     <Box width="20%">
       <Text fontWeight={400} fontSize="lg">
-        30%
+        0%
       </Text>
     </Box>
     <Box width="10%">
@@ -54,14 +54,20 @@ const StudentOverview = ({ student, classId,teacherID}) => (
       </Text>
     </Box>
     <Box width="10%">
-     <Button height={"30px"} onClick={async()=>{
-       const res = await axios.post('/teacher/removeStudent', {
-        classID:classId,
-        studentID:student?._id, 
-        teacherID:teacherID
-      })
-      console.log(res)
-     }} colorScheme={"red"}>Remove</Button>
+      <Button
+        height={"30px"}
+        onClick={async () => {
+          const res = await axios.post("/teacher/removeStudent", {
+            classID: classId,
+            studentID: student?._id,
+            teacherID: teacherID,
+          });
+          console.log(res);
+        }}
+        colorScheme={"red"}
+      >
+        Remove
+      </Button>
     </Box>
   </Box>
 );
@@ -116,10 +122,11 @@ const TestOverview = ({ test, classId }) => {
 };
 
 const TeacherClass = () => {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const [showDeleteModal,setShowDeleteModal] = useState(false);
-
-  const toggleDeleteModal = () => {setShowDeleteModal(!showDeleteModal)}
+  const toggleDeleteModal = () => {
+    setShowDeleteModal(!showDeleteModal);
+  };
 
   const navigate = useNavigate();
   const [showSubjectModal, setShowSubjectModal] = useState(false);
@@ -138,16 +145,14 @@ const TeacherClass = () => {
     setShowAnnouncementModal(!showAnnouncementModal);
   };
 
-    
-  const handleDeleteClass = async() => {
-    const res = await axios.post('/teacher/deleteClass', {
-      classID:classData?._id, 
-      teacherID:classData?.teacher
-    })
-    console.log(res)
-    navigate('/teacher/classes')
+  const handleDeleteClass = async () => {
+    const res = await axios.post("/teacher/deleteClass", {
+      classID: classData?._id,
+      teacherID: classData?.teacher,
+    });
+    console.log(res);
+    navigate("/teacher/classes");
   };
-
 
   useEffect(() => {
     const classId = params.id;
@@ -158,7 +163,6 @@ const TeacherClass = () => {
   }, []);
 
   return (
-    
     <Box padding="20px 20px 100px 20px">
       <Box
         height="350px"
@@ -249,20 +253,37 @@ const TeacherClass = () => {
           >
             MAKE ANNOUNCEMENT
           </Button>
-          <Button onClick={toggleDeleteModal} colorScheme={"red"}>Delete Class</Button>
+          <Button onClick={toggleDeleteModal} colorScheme={"red"}>
+            Delete Class
+          </Button>
           <AddAnnouncementModal
             state={showAnnouncementModal}
             toggleModal={toggleAnnouncementModal}
             classId={classData?._id}
           />
         </Box>
+        <Text
+          marginLeft="20px"
+          marginTop="20px"
+          boxShadow="0px 8px 20px rgba(35, 35, 35, 0.1)"
+          width="fit-content"
+          padding="10px 20px"
+        >
+          Class Code: {classData?._id}
+        </Text>
       </Box>
-    <DeleteModal state={showDeleteModal} toggleModal={toggleDeleteModal} onNo={toggleDeleteModal} onYes={handleDeleteClass} />
+      <DeleteModal
+        state={showDeleteModal}
+        toggleModal={toggleDeleteModal}
+        onNo={toggleDeleteModal}
+        onYes={handleDeleteClass}
+      />
 
       <Tabs marginTop="30px">
         <TabList>
           <Tab _focus={{ outline: "none" }}>STUDENTS</Tab>
           <Tab _focus={{ outline: "none" }}>TESTS</Tab>
+          <Tab _focus={{ outline: "none" }}>FEEDBACKS</Tab>
         </TabList>
 
         <TabPanels>
@@ -312,13 +333,34 @@ const TeacherClass = () => {
             </Box>
             <Box marginBottom="50px">
               {classData?.students.map((student) => (
-                <StudentOverview student={student} classId={classData?._id} teacherID={classData?.teacher} />
+                <StudentOverview
+                  student={student}
+                  classId={classData?._id}
+                  teacherID={classData?.teacher}
+                />
               ))}
             </Box>
           </TabPanel>
           <TabPanel>
             {classData?.tests.map((t) => (
-              <TestOverview test={t} classId={classData?._id} teacherID={classData?.teacher} />
+              <TestOverview
+                test={t}
+                classId={classData?._id}
+                teacherID={classData?.teacher}
+              />
+            ))}
+          </TabPanel>
+          <TabPanel>
+            {classData?.feedback.map((fd) => (
+              <Fade left>
+                <Box
+                boxShadow="0px 8px 20px rgba(35, 35, 35, 0.1)"
+                padding="20px"
+                width="50%"
+              >
+                <Rating value={fd.rating} readOnly /> <Text>{fd.Text}</Text>
+              </Box>
+              </Fade>
             ))}
           </TabPanel>
         </TabPanels>

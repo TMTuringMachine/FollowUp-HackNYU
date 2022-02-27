@@ -26,6 +26,7 @@ import { logout } from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/LOGO.svg";
 
+
 // import { getAllCourses } from "../../hooks/useCourse";
 
 const SidebarBtn = ({ url, children }) => {
@@ -187,15 +188,17 @@ const StudentHeader = () => {
               width="170px"
               margin="30px auto"
             />
-            <Text>{user?.name ? user?.name : "no name"}</Text>
+            <Link to="/student/studentDashboard"><Text>{user?.name ? user?.name : "no name"}</Text></Link>
           </DrawerHeader>
           <DrawerBody display="flex" flexDirection="column" alignItems="center">
             <SidebarBtn url="/student/recentTests">TESTS</SidebarBtn>
             <SidebarBtn url="/student/performance">PERFORMANCE</SidebarBtn>
             <SidebarBtn url="/student/announcement">ANNOUNCEMENTS</SidebarBtn>
             <SidebarBtn url="/student/attendance">ATTENDANCE</SidebarBtn>
+        
 
             <SidebarBtn url="/student/feedback">FEEDBACK</SidebarBtn>
+            <a href="/chat" target="_blank">CHAT ROOM</a>
             <Button
               position="absolute"
               bottom="20px"

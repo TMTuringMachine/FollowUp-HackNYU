@@ -131,7 +131,8 @@ export const getTest = async (testId) => {
 };
 
 
-export const setStudentMarks = async (data) => {
+export const setStudentMarks = async (data,enqueueSnackbar) => {
+
   const body = JSON.stringify(data);
   const config = {
     headers: {
@@ -141,6 +142,9 @@ export const setStudentMarks = async (data) => {
 
   try{
     const res = await axios.post('/teacher/setMarks',body,config);
+    if(res.data.ok){
+      enqueueSnackbar("Marks saved ",{variant:"success"})
+    }
     console.log(res,"student set marks response");
   }catch(err){
     console.log(err);

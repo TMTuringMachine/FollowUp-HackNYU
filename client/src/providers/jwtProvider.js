@@ -19,12 +19,12 @@ export default function JwtProvider({ children }) {
   useEffect(() => {
     var token = null;
     var url = window.location.href;
-    if (url.includes("/teacher/")) {
+    if (url.includes("/teacher/") && !url.includes("/teacher/signup")) {
       token = localStorage.getItem("teacherToken");
       if (!token) navigate(`/teacher/login`);
     }
 
-    if (url.includes("/student/")) {
+    if (url.includes("/student/") && !url.includes("/student/signup") ){
       token = localStorage.getItem("studentToken");
       if (!token) navigate(`/student/login`);
     }
