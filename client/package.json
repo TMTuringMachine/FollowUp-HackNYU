@@ -5,11 +5,11 @@
   "dependencies": {
     "@chakra-ui/icons": "^1.1.1",
     "@chakra-ui/react": "^1.7.4",
-    "@emotion/react": "^11",
-    "@emotion/styled": "^11",
+    "@emotion/react": "latest",
+    "@emotion/styled": "latest",
     "@iconify/react": "^3.1.2",
     "@mui/lab": "^5.0.0-alpha.70",
-    "@mui/material": "^5.3.0",
+    "@mui/material": "latest",
     "@reduxjs/toolkit": "^1.7.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -36,10 +36,7 @@
     "styled-component": "^2.8.0",
     "styled-components": "^5.3.3",
     "web-vitals": "^2.1.4",
-    "@mui/material": "latest",
-    "@mui/icons-material": "latest",
-    "@emotion/styled": "latest",
-    "@emotion/react": "latest"
+    "@mui/icons-material": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
