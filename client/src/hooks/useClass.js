@@ -150,4 +150,12 @@ export const getAllAnnouncements = async (classId) => {
   }
 };
 
+export const getAttendance = async (student_id) => {
+  const res = await axios.get(`/student/getAttendance/${student_id}`);
+  if (res.data.ok) {
+    return res.data.attendance;
+  } else {
+  }
+};
+
 export default giveFeedback;

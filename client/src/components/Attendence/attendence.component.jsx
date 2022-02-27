@@ -1,32 +1,81 @@
-import React from "react";
-import { Heading, Divider, Text, Grid, Center } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import {
+  Heading,
+  Divider,
+  Text,
+  Flex,
+  Center,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Td,
+  Th,
+} from "@chakra-ui/react";
 import { PieChart, Pie } from "recharts";
+import { getAttendance } from "../../hooks/useClass";
+import { useSelector } from "react-redux";
+import shadows from "../../theme/shadows";
 
-const data01 = [
-  {
-    name: "Present",
-    value: 60,
-  },
-  {
-    name: "Abesnt",
-    value: 40,
-  },
-];
+import moment from "moment";
 
 export default function Attendence() {
+  const [data, setData] = useState([]);
+  const [attendance, setAttendance] = useState([]);
+
+  let [total, setTotal] = useState(0);
+  let [present, setPresent] = useState(0);
+  const user = useSelector((store) => store.auth.user);
+  useEffect(() => {
+    getAttendance(user._id).then((res) => {
+      setAttendance(res);
+    });
+  }, []);
+  useEffect(() => {
+    attendance.forEach(async (atte) => {
+      total = total + 1;
+      setTotal(total);
+      if (atte.isPresent) {
+        present = present + 1;
+        setPresent(present);
+      }
+    });
+    setData([
+      {
+        name: "present",
+        value: Math.ceil((present / total) * 100),
+      },
+      {
+        name: "absent",
+        value: Math.floor(((total - present) / total) * 100),
+      },
+    ]);
+  }, [attendance]);
+  console.log(data);
   return (
-    <div>
+    <Flex justifyContent="flex-start" alignItems="flex-start" flexDir="column">
       <Heading as="h2" m={12} size="2xl" color="purple.600">
-        ATTENDENCE
+        ATTENDANCE
       </Heading>
-      <Grid templateColumns="repeat(2, 1fr)" gap={6} m={4}>
-        <Text m={12} fontSize="6xl">
-          68%
-        </Text>
+      <Flex w="100%" justifyContent="space-around" alignItems="center">
+        <Flex
+          boxShadow={shadows.shadow2}
+          p="2rem"
+          borderRadius="20px"
+          justifyContent="center"
+          alignItems="center"
+          m={12}
+          fontSize="6xl"
+        >
+          {Math.ceil((present / total) * 100) == NaN
+            ? "0%"
+            : Math.ceil((present / total) * 100)}
+          %
+        </Flex>
         <div>
           <PieChart width={300} height={300}>
             <Pie
-              data={data01}
+              data={data}
               dataKey="value"
               nameKey="name"
               cx="50%"
@@ -37,41 +86,36 @@ export default function Attendence() {
             />
           </PieChart>
         </div>
-      </Grid>
-      <Center>
-        <Grid templateColumns="repeat(2, 1fr)" gap={6} m={4}>
-          <Grid mx={16}>
-            <Text fontSize="4xl">Date</Text>
-            <Text fontSize="2xl">24 Feb, 2022</Text>
-            <Divider />
-            <Text fontSize="2xl">23 Feb, 2022</Text>
-            <Divider />
-            <Text fontSize="2xl">22 Feb, 2022</Text>
-            <Divider />
-            <Text fontSize="2xl">21 Feb, 2022</Text>
-            <Divider />
-          </Grid>
-          <Grid>
-            <Text fontSize="4xl">Status</Text>
-            <Text fontSize="2xl" color="green.500">
-              P
-            </Text>
-            <Divider />
-            <Text fontSize="2xl" color="red.500">
-              A
-            </Text>
-            <Divider />
-            <Text fontSize="2xl" color="green.500">
-              P
-            </Text>
-            <Divider />
-            <Text fontSize="2xl" color="green.500">
-              P
-            </Text>
-            <Divider />
-          </Grid>
-        </Grid>
-      </Center>
-    </div>
+        <Center>
+          <Table variant="striped" ml="2rem">
+            <Thead>
+              <Tr>
+                <Th fontSize="2rem" fontWeight="800">
+                  Date
+                </Th>
+                <Th fontSize="2rem" fontWeight="800">
+                  Attendance
+                </Th>
+              </Tr>
+            </Thead>
+
+            {attendance.map((atte) => {
+              return (
+                <Tr fontSize="1rem">
+                  <Td>{moment(atte.date).format("DD-MM-YYYY")}</Td>
+                  <Td fontSize="1.4rem" fontWeight="800">
+                    {atte.isPresent ? (
+                      <Text color="green.800">P</Text>
+                    ) : (
+                      <Text color="red.800">A</Text>
+                    )}
+                  </Td>
+                </Tr>
+              );
+            })}
+          </Table>
+        </Center>
+      </Flex>
+    </Flex>
   );
 }
