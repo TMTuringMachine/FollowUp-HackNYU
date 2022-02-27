@@ -134,13 +134,12 @@ const addSubject = async (req, res) => {
     if (!subjectExists) {
       const newSubject = new Subject({ name, totalMarks, classID });
       const saveSubject = await newSubject.save();
-      const classRef = await Class.findById(classID);
-      classRef.subjects.push(saveSubject);
-
-      await classRef.save();
-
-      if (saveSubject)
-        res.status(200).send({ ok: true, message: "New Subject Added!",saveSubject });
+      if (saveSubject){
+        const AppendInClass = await Class.findById(classID);
+        AppendInClass.subjects.push(saveSubject._id)
+        const updated = await Class.findByIdAndUpdate(classID,{subjects:AppendInClass.subjects})
+        res.status(200).send({ ok: true, message: "New Subject Added!" });
+      }
     } else {
       res.status(200).send({ ok: false, message: "Subject Already Exists!" });
     }
