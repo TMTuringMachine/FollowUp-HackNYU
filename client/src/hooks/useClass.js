@@ -1,5 +1,12 @@
 import axios from "../utils/axios";
-const giveFeedback = async (formData, navigate) => {
+// const dotenv = require("dotenv").config({ path: "../../.env" });
+// const accountSid = process.env.accountSid;
+// const authToken = process.env.authToken;
+// const client = require("twilio")(accountSid, authToken, {
+//   lazyLoading: true,
+// });
+
+const giveFeedback = async (formData, navigate, enqueueSnackbar) => {
   const body = JSON.stringify(formData);
   const config = {
     headers: {
@@ -11,8 +18,15 @@ const giveFeedback = async (formData, navigate) => {
     const res = await axios.post("/student/feedback", body, config);
     console.log(res);
     navigate("/student/recentTests");
+
+    enqueueSnackbar("Feedback Sent!", {
+      variant: "success",
+    });
   } catch (e) {
     console.log(e);
+    enqueueSnackbar("Some Error Occurred!", {
+      variant: "error",
+    });
   }
 };
 
@@ -35,7 +49,7 @@ export const getClass = async (classId) => {
   return null;
 };
 
-export const createClass = async (data, navigate) => {
+export const createClass = async (data, navigate, enqueueSnackbar) => {
   const body = JSON.stringify(data);
   const config = {
     headers: {
@@ -49,13 +63,20 @@ export const createClass = async (data, navigate) => {
     if (res.data.ok) {
       navigate(`/teacher/class/${res.data.saveClass._id}`);
       console.log(res.data, "wekjnfkw");
+      enqueueSnackbar("Class created!", {
+        variant: "success",
+      });
+    } else {
+      enqueueSnackbar("Some error occurred!", {
+        variant: "error",
+      });
     }
   } catch (err) {
     console.log(err);
   }
 };
 
-export const addSubject = async (data) => {
+export const addSubject = async (data, enqueueSnackbar) => {
   const body = JSON.stringify(data);
   const config = {
     headers: {
@@ -66,12 +87,18 @@ export const addSubject = async (data) => {
   try {
     const res = await axios.post("/teacher/addSubject", body, config);
     console.log(res, "Add subject response");
+    enqueueSnackbar("Subject added to class!", {
+      variant: "success",
+    });
   } catch (err) {
     console.log(err);
+    enqueueSnackbar("Some error occurred!", {
+      variant: "error",
+    });
   }
 };
 
-export const addTest = async (data,navigate) =>{
+export const addTest = async (data,navigate, enqueueSnackbar) => {
   const body = JSON.stringify(data);
   const config = {
     headers: {
@@ -79,15 +106,17 @@ export const addTest = async (data,navigate) =>{
     },
   };
 
-  try{
-    const res = await axios.post('/teacher/addTest',body,config);
-    console.log(res,"Add test response");
-    if(res.data.ok){
-      console.log(res.data);
-      navigate(`/teacher/class/${data.classID}/test/${res.data.saveTest._id}`);
-
-    }
-  }catch(err){
+  try {
+    const res = await axios.post("/teacher/addTest", body, config);
+    console.log(res, "Add test response");
+    enqueueSnackbar("Test added successfully!", {
+      variant: "success",
+    });
+    navigate(`/teacher/class/${data.classID}/test/${res.data.saveTest._id}`)
+  } catch (err) {
+    enqueueSnackbar("Some error occurred!", {
+      variant: "error",
+    });
     console.log(err);
   }
 };
@@ -127,7 +156,7 @@ export const getAllTests = async (studentId) => {
   }
 }
 
-export const markAttendance = async (formData, navigate) => {
+export const markAttendance = async (formData, navigate, enqueueSnackbar) => {
   try {
     const body = JSON.stringify(formData);
     const config = {
@@ -137,11 +166,23 @@ export const markAttendance = async (formData, navigate) => {
     };
     const res = await axios.post("teacher/markAttendance", body, config);
     console.log(res);
-    navigate("/teacher/classes");
-  } catch (e) {}
+    if (res.data.ok) {
+      navigate("/teacher/classes");
+
+      enqueueSnackbar("Attendance Marked!", {
+        variant: "success",
+      });
+    } else {
+      enqueueSnackbar("Some error occurred!", {
+        variant: "error",
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
 };
 
-export const addAnnouncement = async (data) => {
+export const addAnnouncement = async (data, enqueueSnackbar) => {
   const body = JSON.stringify(data);
   const config = {
     headers: {
@@ -151,7 +192,13 @@ export const addAnnouncement = async (data) => {
   try {
     const res = await axios.post("/teacher/addAnnouncement", body, config);
     console.log(res, "announcement response");
+    enqueueSnackbar("Announcement created!", {
+      variant: "success",
+    });
   } catch (err) {
+    enqueueSnackbar("Some error occurred!", {
+      variant: "error",
+    });
     console.log(err);
   }
 };

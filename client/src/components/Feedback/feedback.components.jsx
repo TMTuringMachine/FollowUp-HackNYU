@@ -17,26 +17,27 @@ import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfi
 import { useNavigate } from "react-router-dom";
 import giveFeedback from "../../hooks/useClass";
 import { useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
 export default function Feedback() {
   const customIcons = {
     1: {
-      icon: <SentimentVeryDissatisfiedIcon />,
+      icon: <SentimentVeryDissatisfiedIcon sx={{ fontSize: "4rem" }} />,
       label: "Very Dissatisfied",
     },
     2: {
-      icon: <SentimentDissatisfiedIcon />,
+      icon: <SentimentDissatisfiedIcon sx={{ fontSize: "4rem" }} />,
       label: "Dissatisfied",
     },
     3: {
-      icon: <SentimentSatisfiedIcon />,
+      icon: <SentimentSatisfiedIcon sx={{ fontSize: "4rem" }} />,
       label: "Neutral",
     },
     4: {
-      icon: <SentimentSatisfiedAltIcon />,
+      icon: <SentimentSatisfiedAltIcon sx={{ fontSize: "4rem" }} />,
       label: "Satisfied",
     },
     5: {
-      icon: <SentimentVerySatisfiedIcon />,
+      icon: <SentimentVerySatisfiedIcon sx={{ fontSize: "4rem" }} />,
       label: "Very Satisfied",
     },
   };
@@ -65,9 +66,10 @@ export default function Feedback() {
   const onChangeHandler = (e) => {
     setData({ ...data, text: e.target.value });
   };
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const onSubmitHandler = () => {
     data.rating = value;
-    giveFeedback(data, navigate);
+    giveFeedback(data, navigate, enqueueSnackbar);
     console.log(data);
   };
   return (
@@ -78,22 +80,29 @@ export default function Feedback() {
       <Text fontSize="2xl" ml={12} my={4}>
         Write your feedback/review for the teachers.
       </Text>
-      <Rating
-        name="highlight-selected-only"
-        value={value}
-        defaultValue={4}
-        IconContainerComponent={IconContainer}
-        highlightSelectedOnly
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-        onChangeActive={(event, newHover) => {
-          setHover(newHover);
-        }}
-      />
-      {value !== null && (
-        <Box>{customIcons[hover !== -1 ? hover : value].label}</Box>
-      )}
+      <Flex
+        justifyContent="center"
+        alignItems="center"
+        flexDir="column"
+        fontSize="1.2rem"
+      >
+        <Rating
+          name="highlight-selected-only"
+          value={value}
+          defaultValue={4}
+          IconContainerComponent={IconContainer}
+          highlightSelectedOnly
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+          onChangeActive={(event, newHover) => {
+            setHover(newHover);
+          }}
+        />
+        {value !== null && (
+          <Box mt="1rem">{customIcons[hover !== -1 ? hover : value].label}</Box>
+        )}
+      </Flex>
       <Textarea
         ml={12}
         my={6}

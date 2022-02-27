@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { Modal } from "@mui/material";
 import DatePicker from "react-datepicker";
-
+import { useSnackbar } from "notistack";
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "react-time-picker";
 import styled from "styled-components";
@@ -33,6 +33,7 @@ export const CustomTimePicker = styled(TimePicker)({
 });
 
 const AddTestModal = ({ state, toggleModal, subjects, classId }) => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [startDate, setStartDate] = useState(new Date());
   const [value, onChange] = useState("10:00");
   const [testData, setTestData] = useState({
@@ -51,11 +52,11 @@ const AddTestModal = ({ state, toggleModal, subjects, classId }) => {
   const handleTestAdd = () => {
     const data = {
       ...testData,
-      date:testData.date.toLocaleDateString(),
-      classID:classId
-    }
+      date: testData.date.toLocaleDateString(),
+      classID: classId,
+    };
     console.log(data);
-    addTest(data,navigate);
+    addTest(data,navigate,enqueueSnackbar);
   };
 
   const handleCheck = (id,isChecked) => {
@@ -65,7 +66,7 @@ const AddTestModal = ({ state, toggleModal, subjects, classId }) => {
       const newSubjects = testData.subjects.filter(s => s !== id);
       setTestData({...testData,subjects:[...newSubjects]})
     }
-  }
+  };
 
   return (
     <Modal open={state} onClose={toggleModal}>
@@ -108,7 +109,11 @@ const AddTestModal = ({ state, toggleModal, subjects, classId }) => {
 
           <SimpleGrid columns={2} width="100%" marginBottom="15px">
             {subjects.map((sub) => (
-              <Checkbox onChange={e => handleCheck(sub._id,e.target.checked)}>{sub?.name}</Checkbox>
+              <Checkbox
+                onChange={(e) => handleCheck(sub._id, e.target.checked)}
+              >
+                {sub?.name}
+              </Checkbox>
             ))}
           </SimpleGrid>
           <Box marginBottom="15px">

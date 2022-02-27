@@ -26,7 +26,7 @@ const ClassOverview = ({classData}) => {
     const navigate = useNavigate();
   return (
     <Fade bottom>
-      <ButtonBase sx={{width:'100%',height:'250px',textAlign:'start'}} onClick={()=>{navigate(`/teacher/class/${classData?._id}`)}}>
+      <ButtonBase sx={{width:'100%',height:'300px',textAlign:'start'}} onClick={()=>{navigate(`/teacher/class/${classData?._id}`)}}>
         <Box
           height="100%"
           width="100%"

@@ -9,6 +9,7 @@ import {
   Tab,
   TabPanel,
 } from "@chakra-ui/react";
+import axios from "../../utils/axios";
 import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
@@ -20,8 +21,10 @@ import AddAnnouncementModal from "./AddAnnouncementModal";
 import { getClass } from "../../hooks/useClass";
 import { useLocation, useParams } from "react-router-dom";
 import Fade from "react-reveal/Fade";
+import DeleteModal from "../../components/deleteModal.componment"
 
-const StudentOverview = ({ student }) => (
+
+const StudentOverview = ({ student, classId,teacherID}) => (
   <Box
     display="flex"
     flexDirection="row"
@@ -45,10 +48,20 @@ const StudentOverview = ({ student }) => (
         30%
       </Text>
     </Box>
-    <Box width="20%">
+    <Box width="10%">
       <Text fontWeight={400} fontSize="lg">
         {student?.phone}
       </Text>
+    </Box>
+    <Box width="10%">
+     <Button height={"30px"} onClick={async()=>{
+       const res = await axios.post('/teacher/removeStudent', {
+        classID:classId,
+        studentID:student?._id, 
+        teacherID:teacherID
+      })
+      console.log(res)
+     }} colorScheme={"red"}>Remove</Button>
     </Box>
   </Box>
 );
@@ -103,6 +116,11 @@ const TestOverview = ({ test, classId }) => {
 };
 
 const TeacherClass = () => {
+
+  const [showDeleteModal,setShowDeleteModal] = useState(false);
+
+  const toggleDeleteModal = () => {setShowDeleteModal(!showDeleteModal)}
+
   const navigate = useNavigate();
   const [showSubjectModal, setShowSubjectModal] = useState(false);
   const [showTestModal, setShowTestModal] = useState(false);
@@ -120,6 +138,17 @@ const TeacherClass = () => {
     setShowAnnouncementModal(!showAnnouncementModal);
   };
 
+    
+  const handleDeleteClass = async() => {
+    const res = await axios.post('/teacher/deleteClass', {
+      classID:classData?._id, 
+      teacherID:classData?.teacher
+    })
+    console.log(res)
+    navigate('/teacher/classes')
+  };
+
+
   useEffect(() => {
     const classId = params.id;
 
@@ -129,9 +158,10 @@ const TeacherClass = () => {
   }, []);
 
   return (
+    
     <Box padding="20px 20px 100px 20px">
       <Box
-        height="280px"
+        height="350px"
         width="100%"
         boxShadow="0px 8px 20px rgba(35, 35, 35, 0.1)"
         borderRadius={5}
@@ -219,6 +249,7 @@ const TeacherClass = () => {
           >
             MAKE ANNOUNCEMENT
           </Button>
+          <Button onClick={toggleDeleteModal} colorScheme={"red"}>Delete Class</Button>
           <AddAnnouncementModal
             state={showAnnouncementModal}
             toggleModal={toggleAnnouncementModal}
@@ -226,6 +257,8 @@ const TeacherClass = () => {
           />
         </Box>
       </Box>
+    <DeleteModal state={showDeleteModal} toggleModal={toggleDeleteModal} onNo={toggleDeleteModal} onYes={handleDeleteClass} />
+
       <Tabs marginTop="30px">
         <TabList>
           <Tab _focus={{ outline: "none" }}>STUDENTS</Tab>
@@ -279,13 +312,13 @@ const TeacherClass = () => {
             </Box>
             <Box marginBottom="50px">
               {classData?.students.map((student) => (
-                <StudentOverview student={student} />
+                <StudentOverview student={student} classId={classData?._id} teacherID={classData?.teacher} />
               ))}
             </Box>
           </TabPanel>
           <TabPanel>
             {classData?.tests.map((t) => (
-              <TestOverview test={t} classId={classData?._id} />
+              <TestOverview test={t} classId={classData?._id} teacherID={classData?.teacher} />
             ))}
           </TabPanel>
         </TabPanels>

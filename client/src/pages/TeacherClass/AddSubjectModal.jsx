@@ -1,9 +1,10 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Box, Text, Input, Button } from "@chakra-ui/react";
 import { Modal } from "@mui/material";
 import { addSubject } from "../../hooks/useClass";
-
-const AddSubjectModal = ({ state, toggleModal,classId }) => {
+import { useSnackbar } from "notistack";
+const AddSubjectModal = ({ state, toggleModal, classId }) => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [subjectData, setSubjectData] = useState({
     name: "",
     totalMarks: 0,
@@ -13,20 +14,19 @@ const AddSubjectModal = ({ state, toggleModal,classId }) => {
     setSubjectData({ ...subjectData, [e.target.name]: e.target.value });
   };
 
-  const handleAddSubject = () =>{
+  const handleAddSubject = () => {
     const data = {
       ...subjectData,
-      classID:classId
-    }
+      classID: classId,
+    };
     console.log(data);
-    addSubject(data);
+    addSubject(data, enqueueSnackbar);
     setSubjectData({
-      name:"",
-      totalMarks:0
-    })
+      name: "",
+      totalMarks: 0,
+    });
     toggleModal();
-
-  }
+  };
 
   return (
     <Modal open={state} onClose={toggleModal}>

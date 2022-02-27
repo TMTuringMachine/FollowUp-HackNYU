@@ -21,7 +21,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
 import { getClass } from "../../hooks/useClass";
 import { markAttendance } from "../../hooks/useClass";
-
+import { useSnackbar } from "notistack";
 const DatePickerContainer = styled("div")(() => ({
   margin: "20px 0 0 20px",
   fontSize: "1.5em",
@@ -36,7 +36,7 @@ const TeacherAttendance = () => {
   const [student, setStudents] = useState([]);
   const [attendanceData, setAttendanceData] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
-
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const navigate = useNavigate();
   useEffect(() => {
     const classId = location.pathname.slice(15, 39);
@@ -70,7 +70,7 @@ const TeacherAttendance = () => {
   };
 
   const onSubmitHandler = () => {
-    markAttendance(attendanceData, navigate);
+    markAttendance(attendanceData, navigate, enqueueSnackbar);
   };
 
   return (

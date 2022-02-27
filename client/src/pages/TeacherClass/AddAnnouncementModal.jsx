@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Box, Text, Input, Button, Textarea } from "@chakra-ui/react";
 import { Modal } from "@mui/material";
+import { useSnackbar } from "notistack";
+import { addAnnouncement } from "../../hooks/useClass";
 
-import {addAnnouncement} from '../../hooks/useClass';
-
-const AddAnnouncementModal = ({ state, toggleModal,classId }) => {
+const AddAnnouncementModal = ({ state, toggleModal, classId }) => {
   const [announcementData, setAnnouncementData] = useState({
     title: "",
     description: "",
@@ -17,19 +17,20 @@ const AddAnnouncementModal = ({ state, toggleModal,classId }) => {
     });
   };
 
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const handleAddAnnouncement = () => {
     const data = {
       ...announcementData,
-      classID:classId
-    }
-    console.log(data)
-    addAnnouncement(data);
+      classID: classId,
+    };
+    console.log(data);
+    addAnnouncement(data, enqueueSnackbar);
     setAnnouncementData({
-      title:"",
-      description:"",
-    })
+      title: "",
+      description: "",
+    });
     toggleModal();
-  }
+  };
 
   return (
     <Modal open={state} onClose={toggleModal}>
