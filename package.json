@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "client": "cd client && npm run start",
     "server": "cd server && npm run nodemon",
-    "dev": "concurrently -c \"bgMagenta,bgBlue,\" npm:server npm:client"
+    "dev": "concurrently -c \"bgMagenta,bgBlue,\" npm:server npm:client",
+    "heroku-postbuild":"NPM_CONFIG_PRODUCTION=false && npm install --prefix client && npm run build --prefix client"
   },
   "author": "",
   "license": "ISC",
