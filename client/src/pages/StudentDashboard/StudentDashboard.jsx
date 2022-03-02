@@ -187,9 +187,9 @@ const StudentDashboard = () => {
             <Box marginBottom="30px">
               <Text fontSize="2xl"  fontWeight={600} >CLASS DETAILS: </Text>
               <Flex><Text fontSize="xl" fontWeight={500}>Name:  </Text> <Text fontSize="xl" fontWeight={300}>{user?.class?.name}</Text></Flex>
-              <Flex><Text fontSize="xl" fontWeight={500}>Students:  </Text> <Text fontSize="xl" fontWeight={300}>{user?.class?.students.length}</Text></Flex>
-              <Flex><Text fontSize="xl" fontWeight={500}>Subjects:  </Text> <Text fontSize="xl" fontWeight={300}>{user?.class?.subjects.length}</Text></Flex>
-              <Flex><Text fontSize="xl" fontWeight={500}>Tests:  </Text> <Text fontSize="xl" fontWeight={300}>{user?.class?.tests.length}</Text></Flex>
+              <Flex><Text fontSize="xl" fontWeight={500}>Students:  </Text> <Text fontSize="xl" fontWeight={300}>{user?.class?.students?.length}</Text></Flex>
+              <Flex><Text fontSize="xl" fontWeight={500}>Subjects:  </Text> <Text fontSize="xl" fontWeight={300}>{user?.class?.subjects?.length}</Text></Flex>
+              <Flex><Text fontSize="xl" fontWeight={500}>Tests:  </Text> <Text fontSize="xl" fontWeight={300}>{user?.class?.tests?.length}</Text></Flex>
             </Box>
           </Box>
         ) : null}

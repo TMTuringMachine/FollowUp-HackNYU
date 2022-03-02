@@ -237,8 +237,8 @@ const markAttendance = async (req, res) => {
         isPresent: d.isPresent,
       });
       await currStudent.save();
-      return res.send({ ok: true, message: "Attendance Marked" });
     });
+    return res.send({ ok: true, message: "Attendance Marked" });
   } catch (e) {
     return res.send({ ok: false, message: "Error Occured" });
   }
