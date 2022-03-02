@@ -161,7 +161,7 @@ const TeacherSignup = () => {
         <Box p="2rem 0rem" className="already">
           Already have an account ?{" "}
           <span style={{ color: "#6c63ff", fontWeight: "800" }}>
-            <Link to="/login">Login</Link>
+            <Link to="/teacher/login">Login</Link>
           </span>
         </Box>
       </Flex>
