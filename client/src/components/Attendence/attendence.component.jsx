@@ -56,7 +56,7 @@ export default function Attendence() {
       },
     ]);
   }, [attendance]);
-  console.log(data);
+  console.log(Math.ceil((present / total) * 100));
   return (
     <Flex justifyContent="flex-start" alignItems="flex-start" flexDir="column">
       <Heading as="h2" m={12} size="2xl" color="purple.600">
@@ -72,8 +72,8 @@ export default function Attendence() {
           m={12}
           fontSize="6xl"
         >
-          {Math.ceil((present / total) * 100) == NaN
-            ? "0%"
+          {Number.isNaN(Math.ceil((present / total) * 100))
+            ? "0"
             : Math.ceil((present / total) * 100)}
           %
         </Flex>

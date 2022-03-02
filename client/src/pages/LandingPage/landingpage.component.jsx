@@ -1,24 +1,23 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 import Lottie from "react-lottie";
 import WelcomeLottie from "../../assets/lotties/welcome.json";
 import Typewriter from "typewriter-effect";
+import { useSelector } from "react-redux";
 
-import HomepageImage from '../../assets/images/homepage.png';
-import {useNavigate} from 'react-router-dom';
+import HomepageImage from "../../assets/images/homepage.png";
+import { useNavigate } from "react-router-dom";
 
-const HomePage = styled("div")(({url})=>({
-  width:'100vw',
-  height:'100vh',
+const HomePage = styled("div")(({ url }) => ({
+  width: "100vw",
+  height: "100vh",
   backgroundImage: `url('${url}')`,
   backgroundPosition: "center",
   backgroundSize: "cover",
-  overflowY:'scroll'
-}))
-
-
+  overflowY: "scroll",
+}));
 
 const LandingPage = () => {
   const defaultOptions = {
@@ -31,6 +30,23 @@ const LandingPage = () => {
   };
 
   const navigate = useNavigate();
+  const user = useSelector((store) => store.auth);
+
+  const clickHandler = (isTeacher) => {
+    if (user.isLoggedIn) {
+      if (isTeacher) {
+        navigate("/teacher/classes");
+      } else {
+        navigate("/student/studentDashboard");
+      }
+    } else {
+      if (isTeacher) {
+        navigate("/teacher/signup");
+      } else {
+        navigate("/student/signup");
+      }
+    }
+  };
 
   return (
     <Box
@@ -79,26 +95,30 @@ const LandingPage = () => {
             />
           </Text>
           <Box marginTop="40px">
-            <Button
-              size="lg"
-              backgroundColor="#4CC9F0"
-              color="#fff"
-              marginRight="30px"
-              _hover={{}}
-              onClick={()=>{navigate('/teacher/signup')}}
-            >
-              I AM A TEACHER
-            </Button>
-            <Button
-              size="lg"
-              backgroundColor="#3A0CA3"
-              color="#fff"
-              marginRight="30px"
-              _hover={{}}
-              onClick={()=>{navigate('/student/signup')}}
-            >
-              I AM A PARENT
-            </Button>
+            {(!user.isLoggedIn || user?.user?.qualification) && (
+              <Button
+                size="lg"
+                backgroundColor="#4CC9F0"
+                color="#fff"
+                marginRight="30px"
+                _hover={{}}
+                onClick={() => clickHandler(true)}
+              >
+                I AM A TEACHER
+              </Button>
+            )}
+            {(!user.isLoggedIn || user?.user?.class) && (
+              <Button
+                size="lg"
+                backgroundColor="#3A0CA3"
+                color="#fff"
+                marginRight="30px"
+                _hover={{}}
+                onClick={() => clickHandler(false)}
+              >
+                I AM A PARENT
+              </Button>
+            )}
           </Box>
         </Box>
       </Flex>

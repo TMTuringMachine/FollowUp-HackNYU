@@ -1,6 +1,6 @@
 import { Flex, Center, Spacer } from "@chakra-ui/layout";
 import { Box } from "@chakra-ui/layout";
-import React, { useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import Signimg from "../../assets/images/Signimg.png";
 import { Input } from "@chakra-ui/input";
 import { Link } from "react-router-dom";
@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { LoginHandler } from "../../hooks/useAuth";
 import AlertComponent from "../../components/Alert/Alert.component";
+import { useSelector } from "react-redux";
 const StudentLogin = () => {
   const [data, setData] = useState({
     email: "",
@@ -18,6 +19,7 @@ const StudentLogin = () => {
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((store) => store.auth);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const onChangeHandler = (e) => {
@@ -37,6 +39,15 @@ const StudentLogin = () => {
       }
     });
   };
+  useLayoutEffect(() => {
+    if (user.isLoggedIn) {
+      if (user.user.qualification) {
+        navigate("/teacher/classes");
+      } else {
+        navigate("/student/studentDashboard");
+      }
+    }
+  });
   return (
     <>
       {isError && <AlertComponent title={errorMessage} />}

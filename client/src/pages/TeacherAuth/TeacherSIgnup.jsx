@@ -1,18 +1,29 @@
 import { Flex, Center, Spacer } from "@chakra-ui/layout";
 import { Box } from "@chakra-ui/layout";
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import Signimg from "../../assets/images/Signimg.png";
 import { Input } from "@chakra-ui/input";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Button } from "@chakra-ui/react";
 // import { useAlert } from "react-alert";
-
+import { useSelector } from "react-redux";
 import { SignupHandler } from "../../hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 
 const TeacherSignup = () => {
+  const user = useSelector((store) => store.auth);
+  useLayoutEffect(() => {
+    if (user.isLoggedIn) {
+      if (user.user.qualification) {
+        navigate("/teacher/classes");
+      } else {
+        navigate("/student/dashboard");
+      }
+    }
+  });
+
   const [data, setData] = useState({
     name: "",
     email: "",

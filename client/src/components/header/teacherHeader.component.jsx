@@ -129,7 +129,6 @@ const TeacherHeader = () => {
 
   const handleLogout = () => {
     logout(dispatch);
-    
   };
 
   // React.useEffect(() => {
@@ -147,7 +146,7 @@ const TeacherHeader = () => {
           color={"#4CC9F0"}
         />
       </IconButton>
-      <Link to="/home">
+      <Link to="/">
         <Logo width="40px" height="40px" style={{ marginLeft: "20px" }} />
       </Link>
       <Input
@@ -179,11 +178,8 @@ const TeacherHeader = () => {
             flexDirection="column"
             alignItems="center"
           >
-           <Avatar
-              src={
-                user?.image
-                 
-              }
+            <Avatar
+              src={user?.image}
               height="170px"
               width="170px"
               margin="30px auto"
@@ -193,7 +189,7 @@ const TeacherHeader = () => {
           <DrawerBody display="flex" flexDirection="column" alignItems="center">
             <SidebarBtn url="/teacher/classes">ALL CLASSES</SidebarBtn>
             <SidebarBtn url="/teacher/teacherDashboard">MY PROFILE</SidebarBtn>
-            
+
             <Button
               position="absolute"
               bottom="20px"

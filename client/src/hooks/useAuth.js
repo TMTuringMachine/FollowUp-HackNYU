@@ -119,12 +119,13 @@ export const initializeUser = async (dispatch) => {
   }
 };
 
-export const logout = (dispatch) => {
+export const logout = (dispatch, navigate) => {
   if (localStorage.getItem("studentToken")) {
     localStorage.removeItem("studentToken");
   } else {
     localStorage.removeItem("teacherToken");
   }
-  window.location.reload()
+  window.location.reload();
   dispatch(logoutSuccess());
+  navigate("/");
 };
