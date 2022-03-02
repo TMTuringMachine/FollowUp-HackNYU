@@ -1,5 +1,10 @@
-# APPNAME
+<h1 align="center">FollowUp</h1>
 
+<h2 align="center">🏆 1st Runner up of <a href="https://hacknyu.org/" target="_blank">HackNYU</a> Hackathon organized by New York University,<br/> sponsored by Meta, Walt Disney and Figma in the Education Track.</h2>
+
+### Figma Link for FrontEnd Design [here](https://www.figma.com/file/pRJytUBaIwDjxaz8A6sng2/Frontend?node-id=0%3A1)
+### Figma Link for Schema [here](https://www.figma.com/file/Ksv0pvkwvCzivkDxI6vaYZ/HackNYU)
+### Devpost Link for Result [here](https://devpost.com/software/follow-up-fznewv)
 ## 💡 Inspiration
 
 Handling attendance, awarding exam marks, and giving feedback for a whole class of numerous students is not an easy task. Similarly, sometimes it's easy to check and maintain the record of your children for the parents. FollowUp is a tool to help you manage your class if you are a teacher or check your child's performance if you are a parent.
@@ -58,7 +63,7 @@ We are using Figma for **prototyping and designing** the project. Figma makes it
 - How to deploy a MERN stack project on the network using GitHub pages.
 - How to work with MERN stack.
 
-## 🚀 What's next for APPNAME
+## 🚀 What's next for Follow Up
 
 - A mobile app version
 
