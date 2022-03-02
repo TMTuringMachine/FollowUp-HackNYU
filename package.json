@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "nodemon server",
     "client": "cd client && npm run start",
     "server": "cd server && npm run nodemon",
     "dev": "concurrently -c \"bgMagenta,bgBlue,\" npm:server npm:client",
