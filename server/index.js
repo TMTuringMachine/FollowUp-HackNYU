@@ -17,7 +17,7 @@ app.use("/student", require("./routes/studentRoutes"));
 if (process.env.NODE_ENV == "production") {
   console.log("here in prod");
   app.use(express.static("client/build"));
-  app.use("*", (req, res) => {
+  app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
   });
 }
